@@ -6,154 +6,37 @@
   <title>필그림스 아카데미 지원서</title>
   <style>
     /* 폰트 및 기본 설정 */
-    body {
-      font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-      background-color: #f1f5f9;
-      color: #334155;
-      padding: 20px;
-      margin: 0;
-      line-height: 1.5;
-    }
+    body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background-color: #f1f5f9; color: #334155; padding: 20px; margin: 0; line-height: 1.5; }
+    .container { max-width: 680px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border-top: 8px solid #0f172a; }
+    h1 { text-align: center; color: #0f172a; margin-top: 0; margin-bottom: 5px; font-size: 24px; }
+    .subtitle { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 30px; }
+    h2 { font-size: 18px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; margin-top: 0; display: flex; justify-content: space-between; align-items: center; }
+    .section { margin-bottom: 30px; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
     
-    /* 메인 폼 컨테이너 */
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-      border-top: 8px solid #0f172a; /* Navy Top Border */
-    }
-
-    /* 텍스트 스타일 */
-    h1 {
-      text-align: center;
-      color: #0f172a;
-      margin-top: 0;
-      margin-bottom: 5px;
-      font-size: 24px;
-    }
-    .subtitle {
-      text-align: center;
-      color: #64748b;
-      font-size: 14px;
-      margin-bottom: 30px;
-    }
-    h2 {
-      font-size: 18px;
-      color: #1e293b;
-      border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 8px;
-      margin-bottom: 15px;
-      margin-top: 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    /* 섹션 및 그리드 레이아웃 */
-    .section {
-      margin-bottom: 30px;
-    }
-    .grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 15px;
-    }
-
-    /* 입력 필드 스타일 */
-    input, select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      box-sizing: border-box;
-      font-size: 14px;
-      background-color: #fff;
-      transition: border-color 0.2s;
-    }
-    input:focus, select:focus {
-      outline: none;
-      border-color: #3b82f6;
-    }
-    input::placeholder {
-      color: #94a3b8;
-    }
-
-    /* 자녀 정보 카드 스타일 */
-    .child-card {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-      position: relative;
-    }
-    .remove-btn {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: #ef4444;
-      font-size: 18px;
-      cursor: pointer;
-      padding: 0;
-    }
-    .add-child-btn {
-      background-color: #eff6ff;
-      color: #2563eb;
-      border: 1px solid #bfdbfe;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background-color: #fff; transition: border-color 0.2s; }
+    input:focus, select:focus { outline: none; border-color: #3b82f6; }
+    input::placeholder { color: #94a3b8; }
+    
+    .child-card { background-color: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
+    .child-header { font-weight: bold; color: #0f172a; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px dashed #cbd5e1; }
+    .remove-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ef4444; font-size: 16px; cursor: pointer; padding: 0; font-weight: bold;}
+    .add-child-btn { background-color: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
     .add-child-btn:hover { background-color: #dbeafe; }
+    
+    /* 프로그램 강조 영역 */
+    .program-section { background-color: #eff6ff; padding: 15px; border-radius: 6px; border: 1px solid #bfdbfe; margin-top: 15px; }
+    .program-section label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
 
-    /* 하단 제출 버튼 */
-    .submit-btn {
-      width: 100%;
-      padding: 16px;
-      background-color: #0f172a;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.2s;
-    }
+    .submit-btn { width: 100%; padding: 16px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.2s; }
     .submit-btn:hover { background-color: #1e293b; }
-    .submit-btn:disabled {
-      background-color: #94a3b8;
-      cursor: not-allowed;
-    }
-
-    /* 알림 메시지 */
-    #message {
-      text-align: center;
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 15px;
-      display: none;
-    }
+    .submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    #message { text-align: center; margin-top: 15px; font-weight: bold; font-size: 15px; display: none; }
     .success { color: #16a34a; }
     .error { color: #dc2626; }
 
-    /* 반응형 (모바일 화면) */
-    @media (max-width: 600px) {
-      .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 10px; }
-      .container { padding: 20px; }
-    }
+    @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; gap: 10px; } .container { padding: 20px; } }
   </style>
 </head>
 <body>
@@ -167,42 +50,21 @@
       <div class="section">
         <h2>1. 보호자 정보</h2>
         <div class="grid-2">
-          <input type="text" id="guardianName" name="guardianName" placeholder="보호자 성함" required>
-          <input type="tel" id="guardianContact" name="guardianContact" placeholder="연락처 (010-0000-0000)" required>
+          <input type="text" id="guardianName" placeholder="보호자 성함" required>
+          <input type="tel" id="guardianContact" placeholder="연락처 (010-0000-0000)" required>
         </div>
         <div class="grid-2">
-          <input type="text" id="region" name="region" placeholder="거주 지역 (예: 서울시 강남구)" required>
-          <input type="text" id="address" name="address" placeholder="상세 주소 (교재 배송용)" required>
+          <input type="text" id="region" placeholder="거주 지역 (예: 서울시 강남구)" required>
+          <input type="text" id="address" placeholder="상세 주소 (교재 배송용)" required>
         </div>
       </div>
 
       <div class="section">
         <h2>
-          2. 자녀 정보
+          2. 자녀 및 지원 프로그램 정보
           <button type="button" class="add-child-btn" onclick="addChild()">+ 자녀 추가</button>
         </h2>
-        
-        <div id="childrenContainer">
-          </div>
-      </div>
-
-      <div class="section">
-        <h2>3. 지원 프로그램 및 납부</h2>
-        <div style="margin-bottom: 15px;">
-          <select id="program" name="program" required>
-            <option value="">지원 프로그램 선택</option>
-            <option value="홈스쿨 과정">홈스쿨 과정 (월 40만원 / 연 400만원)</option>
-            <option value="방과후 과정">방과후 과정 (월 30만원 / 연 300만원)</option>
-            <option value="랭기지 코스">랭기지 코스 (월 20만원 / 연 200만원)</option>
-          </select>
-        </div>
-        <div>
-          <select id="paymentMethod" name="paymentMethod" required>
-            <option value="">납부 방식 선택</option>
-            <option value="매월 납부 (매월 1일)">매월 납부 (매월 1일)</option>
-            <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인 적용)</option>
-          </select>
-        </div>
+        <div id="childrenContainer"></div>
       </div>
 
       <button type="submit" id="submitBtn" class="submit-btn">지원서 제출하기</button>
@@ -218,73 +80,79 @@
     let childCount = 0;
     const MAX_CHILDREN = 5;
 
-    // 초기 화면에 자녀 1명 기본 셋팅
-    window.onload = () => {
-      addChild();
-    };
+    window.onload = () => { addChild(); };
 
-    // 자녀 추가 함수
     function addChild() {
       if (childCount >= MAX_CHILDREN) {
         alert(`최대 ${MAX_CHILDREN}명까지만 등록 가능합니다.`);
         return;
       }
       childCount++;
-      const id = Date.now(); // 고유 ID 부여
+      const id = Date.now();
 
       const childHtml = `
         <div class="child-card" id="child-${id}">
-          ${childCount > 1 ? `<button type="button" class="remove-btn" onclick="removeChild(${id})">✕</button>` : ''}
+          <div class="child-header">자녀 정보 ${childCount > 1 ? '(추가)' : ''}</div>
+          ${childCount > 1 ? `<button type="button" class="remove-btn" onclick="removeChild(${id})">삭제 ✕</button>` : ''}
+          
           <div class="grid-2">
             <input type="text" class="c-name" placeholder="자녀 이름" required>
             <input type="text" class="c-engName" placeholder="영문 이름 (여권 동일)" required>
           </div>
           <div class="grid-3">
             <select class="c-gender" required>
+              <option value="">성별 선택</option>
               <option value="남">남성</option>
               <option value="여">여성</option>
             </select>
             <input type="date" class="c-dob" required>
             <input type="text" class="c-grade" placeholder="한국 학년 (예: 초3)" required>
           </div>
-          <div style="margin-top: 15px;">
+          <div>
              <input type="tel" class="c-contact" placeholder="자녀 연락처 (없으면 비워두세요)">
+          </div>
+
+          <div class="program-section">
+            <div class="grid-2" style="margin-bottom: 0;">
+              <div>
+                <label>지원 프로그램 *</label>
+                <select class="c-program" required>
+                  <option value="">프로그램 선택</option>
+                  <option value="홈스쿨 과정">홈스쿨 과정 (월 40만 / 연 400만)</option>
+                  <option value="방과후 과정">방과후 과정 (월 30만 / 연 300만)</option>
+                  <option value="랭기지 코스">랭기지 코스 (월 20만 / 연 200만)</option>
+                </select>
+              </div>
+              <div>
+                <label>납부 방식 *</label>
+                <select class="c-paymentMethod" required>
+                  <option value="">납부 방식 선택</option>
+                  <option value="매월 납부">매월 납부 (매월 1일)</option>
+                  <option value="1년 일시 납부">1년 일시 납부 (할인 적용)</option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
       `;
       childrenContainer.insertAdjacentHTML('beforeend', childHtml);
     }
 
-    // 자녀 삭제 함수
     function removeChild(id) {
       const childCard = document.getElementById(`child-${id}`);
-      if (childCard) {
-        childCard.remove();
-        childCount--;
-      }
+      if (childCard) { childCard.remove(); childCount--; }
     }
 
-    // 폼 제출 이벤트
     document.getElementById('academyForm').addEventListener('submit', async function(e) {
       e.preventDefault(); 
       
       const btn = document.getElementById('submitBtn');
       const msg = document.getElementById('message');
       
-      // 로딩 상태 처리
       btn.disabled = true;
       btn.innerText = "제출 중입니다. 잠시만 기다려주세요...";
       msg.style.display = "none";
 
-      // 1. 기본 정보 수집
-      const guardianName = document.getElementById('guardianName').value;
-      const guardianContact = document.getElementById('guardianContact').value;
-      const region = document.getElementById('region').value;
-      const address = document.getElementById('address').value;
-      const program = document.getElementById('program').value;
-      const paymentMethod = document.getElementById('paymentMethod').value;
-
-      // 2. 동적 자녀 정보 수집 (배열로 만들기)
       const children = [];
       const childCards = document.querySelectorAll('.child-card');
       
@@ -295,18 +163,17 @@
           gender: card.querySelector('.c-gender').value,
           dob: card.querySelector('.c-dob').value,
           grade: card.querySelector('.c-grade').value,
-          contact: card.querySelector('.c-contact').value
+          contact: card.querySelector('.c-contact').value,
+          program: card.querySelector('.c-program').value,
+          paymentMethod: card.querySelector('.c-paymentMethod').value
         });
       });
 
-      // 3. 구글 시트로 보낼 데이터 포맷팅
       const payload = {
-        guardianName: guardianName,
-        guardianContact: guardianContact,
-        region: region,
-        address: address,
-        program: program,
-        paymentMethod: paymentMethod,
+        guardianName: document.getElementById('guardianName').value,
+        guardianContact: document.getElementById('guardianContact').value,
+        region: document.getElementById('region').value,
+        address: document.getElementById('address').value,
         children: children
       };
 
@@ -318,19 +185,16 @@
           body: JSON.stringify(payload)
         });
 
-        // 성공 처리
         msg.className = "success";
         msg.innerText = "지원서가 성공적으로 접수되었습니다. 감사합니다!";
         msg.style.display = "block";
         
-        // 폼 초기화
         e.target.reset();
         childrenContainer.innerHTML = '';
         childCount = 0;
-        addChild(); // 다시 1명 빈칸으로 셋팅
+        addChild(); 
         
       } catch (error) {
-        // 에러 처리
         msg.className = "error";
         msg.innerText = "제출 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
         msg.style.display = "block";
