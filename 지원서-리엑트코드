@@ -1,0 +1,209 @@
+# 화면 정의서
+
+## 디자인 컨셉
+- 교육 기관에 걸맞은 차분하고 신뢰감을 주는 색상 (네이비, 화이트, 웜그레이)
+- 학부모님이 모바일에서도 쉽게 작성할 수 있는 직관적인 UI/UX
+
+## 히어로 섹션
+- 헤드라인: "필그림스 아카데미에 오신 것을 환영합니다."
+- 서브헤드라인: "글로벌 리더로 성장할 우리 아이의 첫걸음, 지금 시작하세요."
+- 안내 문구: 매월 납부 및 1년 일시 납부 할인 혜택 등 요금 정보 카드 노출
+
+## 프로그램 안내 (요금제 섹션)
+- [홈스쿨 프로그램] 월 50만 → 40만 / 연 400만
+- [방과후 프로그램] 월 30만 / 연 300만
+- [랭기지 코스] 월 20만 / 연 200만
+
+## CTA 지원서 폼 (웹사이트 하단)
+- 안내 문구: "아래 정보를 확인해주시고 지원하고자 하시는 프로그램에 체크해주시기 바랍니다."
+- 섹션 구분: 보호자 정보 / 자녀 정보(다수 추가 가능) / 프로그램 및 결제 선택
+
+## 폼 앱 스크립트 연결 React 코드 (GitHub 배포용)
+
+```tsx
+'use client';
+
+import React, { useCallback, useState } from 'react';
+
+/** FIXME: Apps Script 배포 URL로 반드시 교체하세요 */
+const GOOGLE_SCRIPT_URL = '[https://script.google.com/macros/s/AKfycbwAeISIjTtltqsFJPqR7FMXVCY16_S5JuaWg32JSzcHMh-fDRZIFFQ51lKlZx58FYtc/exec)';
+
+export default function AcademyApplicationForm() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
+  
+  // 자녀 동적 필드 상태 관리
+  const [children, setChildren] = useState([
+    { childName: '', childEngName: '', childGender: '', childBirthdate: '', koreanGrade: '', childContact: '' }
+  ]);
+
+  const handleChildChange = (index: number, field: string, value: string) => {
+    const updatedChildren = [...children];
+    updatedChildren[index] = { ...updatedChildren[index], [field]: value };
+    setChildren(updatedChildren);
+  };
+
+  const addChild = () => {
+    setChildren([...children, { childName: '', childEngName: '', childGender: '', childBirthdate: '', koreanGrade: '', childContact: '' }]);
+  };
+
+  const removeChild = (index: number) => {
+    if (children.length > 1) {
+      setChildren(children.filter((_, i) => i !== index));
+    }
+  };
+
+  const onSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (isSubmitting) return;
+
+      const formEl = e.currentTarget;
+      if (!formEl.checkValidity()) {
+        formEl.reportValidity();
+        return;
+      }
+
+      setIsSubmitting(true);
+      setMessage('제출 중입니다. 잠시만 기다려주세요...');
+      
+      try {
+        const formData = new FormData(formEl);
+        const data = {
+          guardianName: formData.get('guardianName'),
+          guardianContact: formData.get('guardianContact'),
+          region: formData.get('region'),
+          address: formData.get('address'),
+          program: formData.get('program'),
+          paymentMethod: formData.get('paymentMethod'),
+          children: children // 동적 자녀 배열 통합
+        };
+
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data),
+        });
+
+        formEl.reset();
+        setChildren([{ childName: '', childEngName: '', childGender: '', childBirthdate: '', koreanGrade: '', childContact: '' }]); // 폼 초기화
+        setMessage('지원서가 성공적으로 접수되었습니다. 감사합니다!');
+        alert('지원서가 성공적으로 접수되었습니다.');
+      } catch (err) {
+        console.error(err);
+        setMessage('제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [isSubmitting, children]
+  );
+
+  return (
+    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
+      <h2>필그림스 아카데미 지원서</h2>
+      <p>아래 정보를 정확하게 입력해 주시기 바랍니다.</p>
+
+      <form onSubmit={onSubmit} noValidate style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        
+        {/* 보호자 정보 섹션 */}
+        <fieldset style={{ padding: '15px', border: '1px solid #ccc' }}>
+          <legend style={{ fontWeight: 'bold' }}>보호자 정보</legend>
+          <div style={{ marginBottom: '10px' }}>
+            <label>보호자 성함 *</label>
+            <input type="text" name="guardianName" required style={{ width: '100%', padding: '8px' }} />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>보호자 연락처 *</label>
+            <input type="tel" name="guardianContact" required placeholder="010-0000-0000" style={{ width: '100%', padding: '8px' }} />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>주거 지역 *</label>
+            <input type="text" name="region" required placeholder="예: 서울시 강남구" style={{ width: '100%', padding: '8px' }} />
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>자택주소 (교재 배송용) *</label>
+            <input type="text" name="address" required style={{ width: '100%', padding: '8px' }} />
+          </div>
+        </fieldset>
+
+        {/* 자녀 정보 섹션 (동적 추가) */}
+        <fieldset style={{ padding: '15px', border: '1px solid #ccc' }}>
+          <legend style={{ fontWeight: 'bold' }}>자녀 정보</legend>
+          {children.map((child, index) => (
+            <div key={index} style={{ marginBottom: '20px', paddingBottom: '15px', borderBottom: index < children.length - 1 ? '1px dashed #ccc' : 'none' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <h4>자녀 {index + 1}</h4>
+                {children.length > 1 && (
+                  <button type="button" onClick={() => removeChild(index)} style={{ color: 'red', cursor: 'pointer' }}>삭제</button>
+                )}
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label>자녀 성함 *</label>
+                  <input type="text" required value={child.childName} onChange={(e) => handleChildChange(index, 'childName', e.target.value)} style={{ width: '100%', padding: '8px' }} />
+                </div>
+                <div>
+                  <label>영문 성함 (여권과 동일) *</label>
+                  <input type="text" required value={child.childEngName} onChange={(e) => handleChildChange(index, 'childEngName', e.target.value)} style={{ width: '100%', padding: '8px' }} />
+                </div>
+                <div>
+                  <label>성별 *</label>
+                  <select required value={child.childGender} onChange={(e) => handleChildChange(index, 'childGender', e.target.value)} style={{ width: '100%', padding: '8px' }}>
+                    <option value="">선택</option>
+                    <option value="남">남</option>
+                    <option value="여">여</option>
+                  </select>
+                </div>
+                <div>
+                  <label>생년월일 *</label>
+                  <input type="date" required value={child.childBirthdate} onChange={(e) => handleChildChange(index, 'childBirthdate', e.target.value)} style={{ width: '100%', padding: '8px' }} />
+                </div>
+                <div>
+                  <label>한국 학년 *</label>
+                  <input type="text" required value={child.koreanGrade} placeholder="예: 초3, 중1" onChange={(e) => handleChildChange(index, 'koreanGrade', e.target.value)} style={{ width: '100%', padding: '8px' }} />
+                </div>
+                <div>
+                  <label>자녀 연락처 (없으면 비워두세요)</label>
+                  <input type="tel" value={child.childContact} onChange={(e) => handleChildChange(index, 'childContact', e.target.value)} style={{ width: '100%', padding: '8px' }} />
+                </div>
+              </div>
+            </div>
+          ))}
+          <button type="button" onClick={addChild} style={{ padding: '10px', width: '100%', backgroundColor: '#f0f0f0', border: '1px solid #ccc', cursor: 'pointer' }}>
+            + 자녀 추가하기
+          </button>
+        </fieldset>
+
+        {/* 프로그램 및 등록비 섹션 */}
+        <fieldset style={{ padding: '15px', border: '1px solid #ccc' }}>
+          <legend style={{ fontWeight: 'bold' }}>지원 프로그램 및 결제</legend>
+          <div style={{ marginBottom: '10px' }}>
+            <label>지원하실 프로그램 *</label>
+            <select name="program" required style={{ width: '100%', padding: '8px' }}>
+              <option value="">프로그램 선택</option>
+              <option value="홈스쿨 프로그램">홈스쿨 프로그램</option>
+              <option value="방과후 프로그램">방과후 프로그램</option>
+              <option value="랭기지 코스">랭기지 코스</option>
+            </select>
+          </div>
+          <div style={{ marginBottom: '10px' }}>
+            <label>등록비 납부 방식 *</label>
+            <select name="paymentMethod" required style={{ width: '100%', padding: '8px' }}>
+              <option value="">납부 방식 선택</option>
+              <option value="매월 납부 (매월 1일)">매월 납부 (매월 1일)</option>
+              <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인 혜택 적용)</option>
+            </select>
+          </div>
+        </fieldset>
+
+        <button type="submit" disabled={isSubmitting} style={{ padding: '15px', backgroundColor: '#2c3e50', color: 'white', border: 'none', fontSize: '16px', cursor: isSubmitting ? 'not-allowed' : 'pointer' }}>
+          {isSubmitting ? '지원서 제출 중...' : '지원서 제출하기'}
+        </button>
+        
+        {message && <p style={{ textAlign: 'center', fontWeight: 'bold', color: isSubmitting ? 'blue' : 'green' }}>{message}</p>}
+      </form>
+    </div>
+  );
+}
