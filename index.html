@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>필그림스 아카데미 지원서</title>
   <style>
-    /* 폰트 및 기본 설정 */
     body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background-color: #f1f5f9; color: #334155; padding: 20px; margin: 0; line-height: 1.5; }
     .container { max-width: 680px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border-top: 8px solid #0f172a; }
     h1 { text-align: center; color: #0f172a; margin-top: 0; margin-bottom: 5px; font-size: 24px; }
@@ -25,7 +24,6 @@
     .add-child-btn { background-color: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 6px 12px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
     .add-child-btn:hover { background-color: #dbeafe; }
     
-    /* 프로그램 강조 영역 */
     .program-section { background-color: #eff6ff; padding: 15px; border-radius: 6px; border: 1px solid #bfdbfe; margin-top: 15px; }
     .program-section label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
 
@@ -73,7 +71,7 @@
   </div>
 
   <script>
-    // 💡 매우 중요: Google Apps Script 배포 URL
+    // 💡 매우 중요: 구글 앱스 스크립트 배포 URL로 교체하세요!
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwAeISIjTtltqsFJPqR7FMXVCY16_S5JuaWg32JSzcHMh-fDRZIFFQ51lKlZx58FYtc/exec";
 
     const childrenContainer = document.getElementById('childrenContainer');
@@ -108,7 +106,8 @@
             <input type="date" class="c-dob" required>
             <input type="text" class="c-grade" placeholder="한국 학년 (예: 초3)" required>
           </div>
-          <div>
+          <div class="grid-2">
+             <input type="email" class="c-studentEmail" placeholder="학생 구글 이메일 (@gmail.com) *" required>
              <input type="tel" class="c-contact" placeholder="자녀 연락처 (없으면 비워두세요)">
           </div>
 
@@ -127,8 +126,8 @@
                 <label>납부 방식 *</label>
                 <select class="c-paymentMethod" required>
                   <option value="">납부 방식 선택</option>
-                  <option value="매월 납부">매월 납부 (매월 1일)</option>
-                  <option value="1년 일시 납부">1년 일시 납부 (할인 적용)</option>
+                  <option value="매월 납부 (매월 1일)">매월 납부 (매월 1일)</option>
+                  <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인 적용)</option>
                 </select>
               </div>
             </div>
@@ -164,6 +163,7 @@
           dob: card.querySelector('.c-dob').value,
           grade: card.querySelector('.c-grade').value,
           contact: card.querySelector('.c-contact').value,
+          studentEmail: card.querySelector('.c-studentEmail').value, // ★ 이메일 수집 추가
           program: card.querySelector('.c-program').value,
           paymentMethod: card.querySelector('.c-paymentMethod').value
         });
