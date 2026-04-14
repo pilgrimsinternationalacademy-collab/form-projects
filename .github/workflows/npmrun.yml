@@ -1,0 +1,32 @@
+name: Node.js CI Build
+
+# 1. This tells GitHub WHEN to run the script
+on:
+  push:
+    branches: [ "main" ] # Change to "master" if that is your default branch name
+  pull_request:
+    branches: [ "main" ]
+
+# 2. This tells GitHub WHAT to run
+jobs:
+  build:
+    runs-on: ubuntu-latest # Runs on a Linux virtual machine
+
+    steps:
+    # Grabs your repository's code
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Installs Node.js
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x' # You can change this to 16.x, 18.x, etc.
+
+    # Installs your project dependencies (like running npm install locally)
+    - name: Install dependencies
+      run: npm ci
+
+    # Runs your build script
+    - name: Run build
+      run: npm run build
