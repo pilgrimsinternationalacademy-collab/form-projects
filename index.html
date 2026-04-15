@@ -21,7 +21,7 @@
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
     .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
     
-    input, select, textarea { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
     label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
     
     .child-card { background-color: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
@@ -29,6 +29,7 @@
     .add-child-btn { background-color: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
 
     .submit-btn { width: 100%; padding: 18px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; }
+    .submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
     #message { text-align: center; margin-top: 20px; font-weight: bold; display: none; }
     .success { color: #16a34a; }
     
@@ -38,6 +39,11 @@
 <body>
 
 <div class="container">
+  
+  <div style="text-align: right; margin-bottom: 10px;">
+    <a href="index_en.html" style="color: #2563eb; text-decoration: none; font-weight: bold; font-size: 14px;">🇺🇸 English Version</a>
+  </div>
+
   <h1>필그림스 아카데미 지원서</h1>
   
   <div class="header-box">
@@ -80,11 +86,17 @@
 </div>
 
 <script>
+  // 💡 매우 중요: 여기에 구글 앱스 스크립트 배포 URL을 넣어주세요!
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby14cbs69I2XSXs1OIusd3k8UyFtBvfkTYQDQPuAD2TXHCAoOB_aXGOqXhdgdvzadPv/exec";
+  
   let childCount = 0;
 
+  // 자녀 카드 추가 함수
   function addChild() {
-    if (childCount >= 5) return;
+    if (childCount >= 5) {
+      alert("최대 5명까지만 등록 가능합니다.");
+      return;
+    }
     childCount++;
     const id = Date.now();
     const html = `
@@ -103,7 +115,7 @@
           <div><label>학생 구글 이메일 *</label><input type="email" class="c-studentEmail" required></div>
           <div><label>자녀 연락처 (없으면 '없음')</label><input type="text" class="c-contact"></div>
         </div>
-        <div class="grid-2" style="margin-top:10px; background:#f1f5f9; padding:10px; border-radius:6px;">
+        <div class="grid-2" style="margin-top:10px; background:#f1f5f9; padding:15px; border-radius:6px;">
           <div><label>지원 프로그램 *</label>
             <select class="c-program" required>
               <option value="홈스쿨 과정">홈스쿨 과정</option>
@@ -113,21 +125,29 @@
           </div>
           <div><label>납부 방식 *</label>
             <select class="c-paymentMethod" required>
-              <option value="매월 납부">매월 납부</option>
-              <option value="1년 일시 납부">1년 일시 납부 (할인)</option>
+              <option value="매월 납부 (매월 1일)">매월 납부 (매월 1일)</option>
+              <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인 적용)</option>
             </select>
           </div>
         </div>
       </div>`;
     document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', html);
   }
+  
+  // 페이지가 처음 열릴 때 자녀 1명 기본 셋팅
   window.onload = addChild;
 
+  // 폼 제출 기능 (중복 확인 포함)
   document.getElementById('academyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.innerText = "제출 중...";
+    const msg = document.getElementById('message');
     
+    btn.disabled = true; 
+    btn.innerText = "제출 중입니다. 잠시만 기다려주세요...";
+    msg.style.display = "none";
+    
+    // 데이터 모으기
     const children = Array.from(document.querySelectorAll('.child-card')).map(card => ({
       name: card.querySelector('.c-name').value,
       engName: card.querySelector('.c-engName').value,
@@ -145,62 +165,44 @@
       guardianContact: document.getElementById('guardianContact').value,
       region: document.getElementById('region').value,
       address: document.getElementById('address').value,
-      children
+      children: children
     };
 
     try {
-      await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-      document.getElementById('message').innerText = "성공적으로 제출되었습니다!";
-      document.getElementById('message').style.display = "block";
-      document.getElementById('message').className = "success";
-      e.target.reset();
-    } catch (e) { alert("오류가 발생했습니다."); }
-    finally { btn.disabled = false; btn.innerText = "지원서 제출하기"; }
-  });
-
-  // --- (이전 데이터 수집 코드는 그대로 둡니다) ---
-    const payload = {
-      guardianName: document.getElementById('guardianName').value,
-      guardianContact: document.getElementById('guardianContact').value,
-      region: document.getElementById('region').value,
-      address: document.getElementById('address').value,
-      children
-    };
-
-    try {
-      // ★ 변경된 부분: mode: 'no-cors'를 지우고, Content-Type을 text/plain으로 바꿉니다.
+      // 구글로 데이터 전송 (CORS 문제 우회를 위해 text/plain 사용)
       const response = await fetch(SCRIPT_URL, { 
         method: 'POST', 
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload) 
       });
 
-      // 서버의 응답을 읽어옵니다.
+      // 구글 서버의 대답(중복 여부 등)을 읽어옴
       const resData = await response.json();
 
-      // 서버에서 중복이라고 응답을 보냈다면?
+      // 만약 이미 제출된 학생이라면?
       if (resData.result === 'duplicate') {
-        alert(resData.message); // 화면에 경고창(알림) 띄우기
-        
-        // 버튼 상태 원상복구 및 제출 중단
+        alert(resData.message); // 화면에 경고창 띄우기
         btn.disabled = false; 
         btn.innerText = "지원서 제출하기";
-        return; // 여기서 실행을 즉시 멈춤!
+        return; // 여기서 더 진행하지 않고 멈춤
       }
 
-      // 중복이 아니고 성공적으로 저장되었다면?
-      document.getElementById('message').innerText = "성공적으로 제출되었습니다!";
-      document.getElementById('message').style.display = "block";
-      document.getElementById('message').className = "success";
-      e.target.reset(); // 입력칸 초기화
+      // 정상 접수되었을 때
+      msg.innerText = "지원서가 성공적으로 접수되었습니다. 감사합니다!";
+      msg.style.display = "block";
+      msg.className = "success";
       
-    } catch (e) { 
-      alert("오류가 발생했습니다."); 
+      e.target.reset(); // 입력칸 초기화
+      document.getElementById('childrenContainer').innerHTML = ''; // 자녀칸 싹 지우기
+      childCount = 0; 
+      addChild(); // 다시 빈 자녀 1명 띄우기
+      
+    } catch (error) { 
+      alert("제출 중 네트워크 오류가 발생했습니다. 다시 시도해주세요."); 
     } finally { 
-      // 성공했을 때만 버튼 텍스트 원상복구
       if (btn.disabled) {
         btn.disabled = false; 
-        btn.innerText = "지원서 제출하기"; 
+        btn.innerText = "지원서 제출하기";
       }
     }
   });
