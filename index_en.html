@@ -5,39 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pilgrims' Academy Application Form</title>
   <style>
-    /* CSS 동일 (상단 한글 버전 참조) */
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; color: #334155; padding: 20px; margin: 0; line-height: 1.6; }
     .container { max-width: 700px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border-top: 8px solid #0f172a; }
+    
     .header-box { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px; font-size: 14px; color: #475569; }
     .header-box h2 { color: #0f172a; margin-top: 0; font-size: 18px; }
     .price-tag { color: #2563eb; font-weight: bold; }
     .contact-info { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #cbd5e1; font-weight: bold; }
+
     h1 { text-align: center; color: #0f172a; margin-bottom: 5px; font-size: 26px; }
     h3 { font-size: 18px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+    
     .section { margin-bottom: 35px; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    
+    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
     label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
-    .child-card { border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
+    
+    .child-card { background-color: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+    .remove-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ef4444; font-size: 14px; cursor: pointer; font-weight: bold;}
+    .add-child-btn { background-color: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
+
     .submit-btn { width: 100%; padding: 18px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; }
-    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+    .submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
+    #message { text-align: center; margin-top: 20px; font-weight: bold; display: none; }
+    .success { color: #16a34a; }
+    
+    @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
 <div class="container">
+  
+  <div style="text-align: right; margin-bottom: 10px;">
+    <a href="index.html" style="color: #2563eb; text-decoration: none; font-weight: bold; font-size: 14px;">🇰🇷 한국어 버전</a>
+  </div>
+
   <h1>Pilgrims' Academy Application</h1>
   
   <div class="header-box">
     <h2>Welcome to Pilgrims' Academy</h2>
-    <p>Thank you for visiting us. Please review the information below and select the program you wish to apply for.</p>
+    <p>Thank you for visiting us. Please review the registration fees below and select your preferred program.</p>
     
     <strong>[Registration Fees]</strong><br>
     • Monthly: Homeschool <span class="price-tag">400,000 KRW</span> / After-school 300,000 KRW / Language 200,000 KRW<br>
-    • Yearly (Special Discount): Homeschool <span class="price-tag">4,000,000 KRW</span> / After-school 3,000,000 KRW / Language 2,000,000 KRW
+    • Yearly: Homeschool <span class="price-tag">4,000,000 KRW</span> / After-school 3,000,000 KRW / Language 2,000,000 KRW
     
     <div class="contact-info">
-      Inquiry: pilgrimsinternationalacademy@gmail.com / +82-10-9299-4377 (Jisu Lee)
+      Inquiry: pilgrimsinternationalacademy@gmail.com / +82-10-9299-4377
     </div>
   </div>
 
@@ -45,50 +62,57 @@
     <div class="section">
       <h3>1. Parent/Guardian Information</h3>
       <div class="grid-2">
-        <div><label>Full Name *</label><input type="text" id="guardianName" required></div>
-        <div><label>Email Address *</label><input type="email" id="guardianContact" placeholder="example@email.com" required></div>
+        <div><label>Parent Name *</label><input type="text" id="guardianName" required></div>
+        <div><label>Email Address *</label><input type="email" id="guardianContact" placeholder="example@gmail.com" required></div>
       </div>
       <div class="grid-2">
         <div><label>City & Country *</label><input type="text" id="region" placeholder="e.g. New York, USA" required></div>
-        <div><label>Full Mailing Address *</label><input type="text" id="address" placeholder="For shipping textbooks" required></div>
+        <div><label>Mailing Address *</label><input type="text" id="address" placeholder="For textbook shipping" required></div>
       </div>
     </div>
 
     <div class="section">
       <h3>
         2. Children Information
-        <button type="button" class="add-child-btn" onclick="addChild()" style="cursor:pointer">+ Add Child</button>
+        <button type="button" class="add-child-btn" onclick="addChild()">+ Add Child</button>
       </h3>
       <div id="childrenContainer"></div>
     </div>
 
     <button type="submit" id="submitBtn" class="submit-btn">Submit Application</button>
-    <div id="message" style="text-align:center; margin-top:20px; font-weight:bold; color:green; display:none;">Submitted Successfully!</div>
+    <div id="message"></div>
   </form>
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby14cbs69I2XSXs1OIusd3k8UyFtBvfkTYQDQPuAD2TXHCAoOB_aXGOqXhdgdvzadPv/exec";
+  // 💡 Update this with your actual Google Script URL
+  const SCRIPT_URL = "여기에_원장님의_구글스크립트_URL을_붙여넣으세요";
+  
   let childCount = 0;
 
   function addChild() {
+    if (childCount >= 5) {
+      alert("Maximum 5 children allowed.");
+      return;
+    }
     childCount++;
     const id = Date.now();
     const html = `
       <div class="child-card" id="child-${id}">
+        ${childCount > 1 ? `<button type="button" class="remove-btn" onclick="document.getElementById('child-${id}').remove(); childCount--;">Remove ✕</button>` : ''}
         <div class="grid-2">
-          <div><label>Child's Name *</label><input type="text" class="c-name" required></div>
-          <div><label>Passport Name (English) *</label><input type="text" class="c-engName" placeholder="Same as Passport" required></div>
+          <div><label>Child Name *</label><input type="text" class="c-name" placeholder="Full Name" required></div>
+          <div><label>English Name *</label><input type="text" class="c-engName" placeholder="Same as Passport" required></div>
         </div>
         <div class="grid-2">
           <div><label>Gender *</label><select class="c-gender" required><option value="Male">Male</option><option value="Female">Female</option></select></div>
           <div><label>Date of Birth *</label><input type="date" class="c-dob" required></div>
         </div>
         <div class="grid-2">
-          <div><label>Current Grade *</label><input type="text" class="c-grade" placeholder="e.g. Grade 3" required></div>
-          <div><label>Child's Email *</label><input type="email" class="c-studentEmail" required></div>
+          <div><label>Current Grade *</label><input type="text" class="c-grade" placeholder="e.g. Grade 5" required></div>
+          <div><label>Student Gmail *</label><input type="email" class="c-studentEmail" required></div>
         </div>
-        <div class="grid-2" style="background:#f1f5f9; padding:15px; border-radius:6px;">
+        <div class="grid-2" style="margin-top:10px; background:#f1f5f9; padding:15px; border-radius:6px;">
           <div><label>Select Program *</label>
             <select class="c-program" required>
               <option value="Homeschool">Homeschool Program</option>
@@ -106,12 +130,17 @@
       </div>`;
     document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', html);
   }
+  
   window.onload = addChild;
 
   document.getElementById('academyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.innerText = "Submitting...";
+    const msg = document.getElementById('message');
+    
+    btn.disabled = true; 
+    btn.innerText = "Submitting... Please wait.";
+    msg.style.display = "none";
     
     const children = Array.from(document.querySelectorAll('.child-card')).map(card => ({
       name: card.querySelector('.c-name').value,
@@ -129,60 +158,41 @@
       guardianContact: document.getElementById('guardianContact').value,
       region: document.getElementById('region').value,
       address: document.getElementById('address').value,
-      children
+      children: children
     };
 
     try {
-      await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
-      document.getElementById('message').style.display = "block";
-      e.target.reset();
-    } catch (e) { alert("An error occurred."); }
-    finally { btn.disabled = false; btn.innerText = "Submit Application"; }
-  });
-  
-// --- (이전 데이터 수집 코드는 그대로 둡니다) ---
-    const payload = {
-      guardianName: document.getElementById('guardianName').value,
-      guardianContact: document.getElementById('guardianContact').value,
-      region: document.getElementById('region').value,
-      address: document.getElementById('address').value,
-      children
-    };
-
-    try {
-      // ★ 변경된 부분: mode: 'no-cors'를 지우고, Content-Type을 text/plain으로 바꿉니다.
       const response = await fetch(SCRIPT_URL, { 
         method: 'POST', 
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload) 
       });
 
-      // 서버의 응답을 읽어옵니다.
       const resData = await response.json();
 
-      // 서버에서 중복이라고 응답을 보냈다면?
       if (resData.result === 'duplicate') {
-        alert(resData.message); // 화면에 경고창(알림) 띄우기
-        
-        // 버튼 상태 원상복구 및 제출 중단
+        // Show English duplicate warning
+        alert(`Warning: The student [${resData.studentName || ''}] has already applied.\nPlease contact the academy for any changes.`);
         btn.disabled = false; 
-        btn.innerText = "지원서 제출하기";
-        return; // 여기서 실행을 즉시 멈춤!
+        btn.innerText = "Submit Application";
+        return;
       }
 
-      // 중복이 아니고 성공적으로 저장되었다면?
-      document.getElementById('message').innerText = "성공적으로 제출되었습니다!";
-      document.getElementById('message').style.display = "block";
-      document.getElementById('message').className = "success";
-      e.target.reset(); // 입력칸 초기화
+      msg.innerText = "Application submitted successfully! Thank you.";
+      msg.style.display = "block";
+      msg.className = "success";
       
-    } catch (e) { 
-      alert("오류가 발생했습니다."); 
+      e.target.reset();
+      document.getElementById('childrenContainer').innerHTML = '';
+      childCount = 0; 
+      addChild();
+      
+    } catch (error) { 
+      alert("A network error occurred. Please try again."); 
     } finally { 
-      // 성공했을 때만 버튼 텍스트 원상복구
       if (btn.disabled) {
         btn.disabled = false; 
-        btn.innerText = "지원서 제출하기"; 
+        btn.innerText = "Submit Application";
       }
     }
   });
