@@ -2,98 +2,105 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>필그림스 지원 관리</title>
+  <title>지원 정보 조회</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: sans-serif; background: #f8fafc; padding: 20px; color: #334; }
-    .container { max-width: 450px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 6px solid #2563eb; }
-    input, select { width: 100%; padding: 12px; border: 1px solid #cbd; border-radius: 6px; margin-bottom: 10px; box-sizing: border-box; }
-    .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; margin-bottom: 8px; }
-    .btn-search { background: #0f172a; color: #fff; }
-    .btn-update { background: #2563eb; color: #fff; }
-    .btn-cancel { background: #ef4444; color: #fff; }
-    #editArea { display: none; border-top: 1px dashed #ccc; margin-top: 20px; padding-top: 20px; }
-    .status-box { padding: 10px; background: #f1f5f9; border-radius: 5px; text-align: center; margin-bottom: 15px; font-weight: bold; }
+    body { font-family: sans-serif; background: #f1f5f9; padding: 20px; }
+    .box { max-width: 400px; margin: 0 auto; background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+    .btn { width: 100%; padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; margin-bottom: 5px; }
+    #infoArea { display: none; margin-top: 20px; border-top: 1px dashed #ccc; padding-top: 20px; }
   </style>
 </head>
 <body>
-<div class="container">
-  <h2 style="text-align: center;">지원 정보 조회</h2>
+<div class="box">
+  <h2 style="text-align:center;">지원 내역 조회</h2>
   <div id="searchArea">
-    <input type="text" id="lookName" placeholder="자녀 이름">
-    <input type="email" id="lookEmail" placeholder="학생 구글 이메일">
-    <button class="btn btn-search" onclick="lookup()">조회하기</button>
+    <input type="text" id="cName" placeholder="자녀 이름">
+    <input type="email" id="cEmail" placeholder="학생 구글 이메일">
+    <button class="btn" style="background:#0f172a;" onclick="lookup()">조회하기</button>
   </div>
 
-  <div id="editArea">
-    <div id="statusBox" class="status-box"></div>
-    <label style="font-size: 12px;">지원 프로그램</label>
-    <select id="editProg"></select>
-    <label style="font-size: 12px;">자녀 연락처</label>
+  <div id="infoArea">
+    <div id="status" style="font-weight:bold; text-align:center; background:#eee; padding:10px; margin-bottom:15px; border-radius:5px;"></div>
+    <label style="font-size:12px;">프로그램 변경</label>
+    <select id="editProg" style="width:100%; padding:10px; margin-bottom:10px;"></select>
+    <label style="font-size:12px;">자녀 연락처</label>
     <input type="text" id="editContact">
     
-    <div id="actionBtns">
-      <button class="btn btn-update" onclick="update()">정보 수정 저장</button>
-      <button class="btn btn-cancel" onclick="cancel()">지원 취소하기</button>
-    </div>
-    <button class="btn" style="background:#e2e; color:#334;" onclick="location.reload()">처음으로</button>
+    <button class="btn" style="background:#2563eb;" id="saveBtn" onclick="update()">정보 수정 저장</button>
+    <button class="btn" style="background:#ef4444;" id="cancelBtn" onclick="cancel()">지원 취소하기</button>
+    <button class="btn" style="background:#64748b;" onclick="location.reload()">처음으로</button>
   </div>
 </div>
 
 <script>
+  // 💡 여기에 원장님의 '새 배포' URL을 반드시 넣으세요!
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYFtCe0D6GuTxNHx4TXtxJ-Sjj0IFNDhKMzIEkykUk9fQWWolA3DcRqhaXcc3LIu_FoQ/exec";
-  let savedName = "", savedEmail = "";
+  
+  let curName = "", curEmail = "";
 
   async function lookup() {
-    savedName = document.getElementById('lookName').value;
-    savedEmail = document.getElementById('lookEmail').value;
-    const res = await fetch(SCRIPT_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'lookup', childName: savedName, studentEmail: savedEmail })
-    });
-    const data = await res.json();
-    if(data.result === 'not_found') return alert("정보를 찾을 수 없습니다.");
+    curName = document.getElementById('cName').value;
+    curEmail = document.getElementById('cEmail').value;
     
-    document.getElementById('searchArea').style.display = 'none';
-    document.getElementById('editArea').style.display = 'block';
-    document.getElementById('statusBox').innerText = `상태: ${data.status}`;
-    document.getElementById('editContact').value = data.student.contact;
-    
-    // 프로그램 리스트 세팅
-    const confRes = await fetch(`${SCRIPT_URL}?type=config`);
-    const conf = await confRes.json();
-    const select = document.getElementById('editProg');
-    select.innerHTML = conf.programs.map(p => `<option value="${p.ko}">${p.ko}</option>`).join('');
-    select.value = data.student.program;
+    if(!curName || !curEmail) return alert("이름과 이메일을 입력해주세요.");
 
-    // 규칙 적용: 등록 완료면 버튼 숨기기
-    if(data.status === '🔵 등록 완료') {
-      document.getElementById('actionBtns').style.display = 'none';
-      document.getElementById('statusBox').style.color = 'blue';
-      document.getElementById('statusBox').innerText += " (수정/취소 불가)";
-    }
+    // 보안 오류 방지를 위해 headers를 명확히 지정합니다.
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'lookup', childName: curName, studentEmail: curEmail })
+      });
+      const data = await resp.json();
+      
+      if(data.result === 'not_found') return alert("일치하는 정보를 찾을 수 없습니다.");
+
+      document.getElementById('searchArea').style.display = 'none';
+      document.getElementById('infoArea').style.display = 'block';
+      document.getElementById('status').innerText = `상태: ${data.status}`;
+      document.getElementById('editContact').value = data.student.contact;
+
+      // 프로그램 목록 로드
+      const conf = await fetch(`${SCRIPT_URL}?type=config`);
+      const config = await conf.json();
+      const sel = document.getElementById('editProg');
+      sel.innerHTML = config.programs.map(p => `<option value="${p.ko}">${p.ko}</option>`).join('');
+      sel.value = data.student.program;
+
+      // 등록 완료면 수정 차단
+      if(data.status === '🔵 등록 완료') {
+        document.getElementById('saveBtn').style.display = 'none';
+        document.getElementById('cancelBtn').style.display = 'none';
+        document.getElementById('status').innerText += " (수정 불가)";
+      }
+    } catch(e) { alert("연결 오류가 발생했습니다. 주소를 확인하세요."); }
   }
 
   async function update() {
-    const res = await fetch(SCRIPT_URL, {
+    if(!confirm("정보를 수정하시겠습니까?")) return;
+    const resp = await fetch(SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'update', childName: savedName, studentEmail: savedEmail, updateData: { contact: document.getElementById('editContact').value, program: document.getElementById('editProg').value, payment: '매월 납부' } })
+      body: JSON.stringify({ 
+        action: 'update', childName: curName, studentEmail: curEmail,
+        updateData: { contact: document.getElementById('editContact').value, program: document.getElementById('editProg').value, payment: '매월 납부' }
+      })
     });
-    const data = await res.json();
-    alert(data.result === 'success' ? "수정 완료!" : data.message);
+    const res = await resp.json();
+    alert(res.result === 'success' ? "수정되었습니다." : res.message);
   }
 
   async function cancel() {
-    if(!confirm("정말 취소하시겠습니까?")) return;
-    const res = await fetch(SCRIPT_URL, {
+    if(!confirm("정말 지원을 취소하시겠습니까?")) return;
+    const resp = await fetch(SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'cancel', childName: savedName, studentEmail: savedEmail })
+      body: JSON.stringify({ action: 'cancel', childName: curName, studentEmail: curEmail })
     });
-    const data = await res.json();
-    alert(data.result === 'success' ? "취소 완료!" : data.message);
+    const res = await resp.json();
+    alert(res.result === 'success' ? "취소되었습니다." : res.message);
     location.reload();
   }
 </script>
