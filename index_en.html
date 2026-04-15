@@ -3,144 +3,115 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pilgrims' Academy Application Form</title>
+  <title>Pilgrims' Academy Application</title>
   <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f1f5f9; color: #334155; padding: 20px; margin: 0; line-height: 1.6; }
-    .container { max-width: 700px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border-top: 8px solid #0f172a; }
-    
-    .header-box { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px; font-size: 14px; color: #475569; }
-    .header-box h2 { color: #0f172a; margin-top: 0; font-size: 18px; }
-    .price-tag { color: #2563eb; font-weight: bold; }
-    .contact-info { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #cbd5e1; font-weight: bold; }
-
-    h1 { text-align: center; color: #0f172a; margin-bottom: 5px; font-size: 26px; }
+    /* CSS 디자인 (한국어 버전과 동일하되 폰트만 영문 최적화) */
+    body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f1f5f9; color: #334155; padding: 20px; margin: 0; line-height: 1.6; }
+    .container { max-width: 700px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 8px solid #0f172a; }
+    .header-box { background: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px; font-size: 14px; }
+    h1 { text-align: center; color: #0f172a; margin-bottom: 5px; }
     h3 { font-size: 18px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    
-    .section { margin-bottom: 35px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-    
-    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
     label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
-    
-    .child-card { background-color: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .remove-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ef4444; font-size: 14px; cursor: pointer; font-weight: bold;}
-    .add-child-btn { background-color: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
-
-    .submit-btn { width: 100%; padding: 18px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; }
-    .submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
-    #message { text-align: center; margin-top: 20px; font-weight: bold; display: none; }
-    .success { color: #16a34a; }
-    
-    @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    .child-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
+    .remove-btn { position: absolute; top: 15px; right: 15px; color: #ef4444; border: none; background: none; cursor: pointer; font-weight: bold; }
+    .add-btn { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
+    .submit-btn { width: 100%; padding: 18px; background: #0f172a; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; }
+    @media (max-width: 600px) { .grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
 <div class="container">
-  
-  <div style="text-align: right; margin-bottom: 10px;">
-    <a href="index.html" style="color: #2563eb; text-decoration: none; font-weight: bold; font-size: 14px;">🇰🇷 한국어 버전</a>
-  </div>
-
+  <div style="text-align: right; margin-bottom: 10px;"><a href="index.html" style="text-decoration: none; color: #2563eb; font-weight: bold; font-size: 14px;">🇰🇷 한국어 버전</a></div>
   <h1>Pilgrims' Academy Application</h1>
   
   <div class="header-box">
-    <h2>Welcome to Pilgrims' Academy</h2>
-    <p>Thank you for visiting us. Please review the registration fees below and select your preferred program.</p>
-    
-    <strong>[Registration Fees]</strong><br>
-    • Monthly: Homeschool <span class="price-tag">400,000 KRW</span> / After-school 300,000 KRW / Language 200,000 KRW<br>
-    • Yearly: Homeschool <span class="price-tag">4,000,000 KRW</span> / After-school 3,000,000 KRW / Language 2,000,000 KRW
-    
-    <div class="contact-info">
-      Inquiry: pilgrimsinternationalacademy@gmail.com / +82-10-9299-4377
-    </div>
+    <h2 id="ui-welcome-h2" style="margin-top:0; font-size:18px;">Welcome</h2>
+    <p id="ui-welcome-msg">Loading information...</p>
+    <div id="ui-prices" style="margin: 15px 0;"></div>
+    <div id="ui-contact" style="border-top: 1px dashed #cbd5e1; pt: 15px; font-weight: bold;"></div>
   </div>
 
   <form id="academyForm">
     <div class="section">
       <h3>1. Parent/Guardian Information</h3>
-      <div class="grid-2">
-        <div><label>Parent Name *</label><input type="text" id="guardianName" required></div>
-        <div><label>Email Address *</label><input type="email" id="guardianContact" placeholder="example@gmail.com" required></div>
+      <div class="grid">
+        <div><label>Parent Full Name *</label><input type="text" id="guardianName" required></div>
+        <div><label>Email Address (Contact) *</label><input type="email" id="guardianContact" placeholder="example@email.com" required></div>
       </div>
-      <div class="grid-2">
+      <div class="grid">
         <div><label>City & Country *</label><input type="text" id="region" placeholder="e.g. New York, USA" required></div>
-        <div><label>Mailing Address *</label><input type="text" id="address" placeholder="For textbook shipping" required></div>
+        <div><label>Full Mailing Address *</label><input type="text" id="address" placeholder="For textbook delivery" required></div>
       </div>
     </div>
 
     <div class="section">
-      <h3>
-        2. Children Information
-        <button type="button" class="add-child-btn" onclick="addChild()">+ Add Child</button>
-      </h3>
+      <h3>2. Child Information <button type="button" class="add-btn" onclick="addChild()">+ Add Child</button></h3>
       <div id="childrenContainer"></div>
     </div>
-
     <button type="submit" id="submitBtn" class="submit-btn">Submit Application</button>
-    <div id="message"></div>
   </form>
 </div>
 
 <script>
-  // 💡 Update this with your actual Google Script URL
-  const SCRIPT_URL = "여기에_원장님의_구글스크립트_URL을_붙여넣으세요";
-  
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYFtCe0D6GuTxNHx4TXtxJ-Sjj0IFNDhKMzIEkykUk9fQWWolA3DcRqhaXcc3LIu_FoQ/exec";
   let childCount = 0;
+  let programs = [];
+
+  async function loadConfig() {
+    try {
+      const resp = await fetch(`${SCRIPT_URL}?type=config`);
+      const config = await resp.json();
+      programs = config.programs;
+      
+      document.getElementById('ui-welcome-msg').innerText = config.general.welcome_msg.en;
+      document.getElementById('ui-contact').innerText = `Contact: ${config.general.contact_email.en} / ${config.general.contact_phone.en}`;
+      
+      let priceHtml = "<strong>[Registration Fee]</strong><br>";
+      programs.forEach(p => { priceHtml += `• ${p.en}<br>`; });
+      document.getElementById('ui-prices').innerHTML = priceHtml;
+      
+      addChild();
+    } catch (e) { console.error(e); }
+  }
 
   function addChild() {
-    if (childCount >= 5) {
-      alert("Maximum 5 children allowed.");
-      return;
-    }
     childCount++;
     const id = Date.now();
+    const progOptions = programs.map(p => `<option value="${p.en}">${p.en}</option>`).join('');
+    
     const html = `
       <div class="child-card" id="child-${id}">
         ${childCount > 1 ? `<button type="button" class="remove-btn" onclick="document.getElementById('child-${id}').remove(); childCount--;">Remove ✕</button>` : ''}
-        <div class="grid-2">
-          <div><label>Child Name *</label><input type="text" class="c-name" placeholder="Full Name" required></div>
-          <div><label>English Name *</label><input type="text" class="c-engName" placeholder="Same as Passport" required></div>
+        <div class="grid">
+          <div><label>Child Full Name *</label><input type="text" class="c-name" required></div>
+          <div><label>English Name (Passport) *</label><input type="text" class="c-engName" required></div>
         </div>
-        <div class="grid-2">
-          <div><label>Gender *</label><select class="c-gender" required><option value="Male">Male</option><option value="Female">Female</option></select></div>
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr;">
+          <div><label>Gender *</label><select class="c-gender"><option value="Male">Male</option><option value="Female">Female</option></select></div>
           <div><label>Date of Birth *</label><input type="date" class="c-dob" required></div>
-        </div>
-        <div class="grid-2">
           <div><label>Current Grade *</label><input type="text" class="c-grade" placeholder="e.g. Grade 5" required></div>
-          <div><label>Student Gmail *</label><input type="email" class="c-studentEmail" required></div>
         </div>
-        <div class="grid-2" style="margin-top:10px; background:#f1f5f9; padding:15px; border-radius:6px;">
-          <div><label>Select Program *</label>
-            <select class="c-program" required>
-              <option value="Homeschool">Homeschool Program</option>
-              <option value="After-school">After-school Program</option>
-              <option value="Language">Language Course</option>
-            </select>
-          </div>
-          <div><label>Payment Plan *</label>
-            <select class="c-paymentMethod" required>
-              <option value="Monthly">Monthly Payment</option>
-              <option value="Yearly">Yearly (Discounted)</option>
-            </select>
-          </div>
+        <div class="grid">
+          <div><label>Student Gmail *</label><input type="email" class="c-studentEmail" required></div>
+          <div><label>Child's Contact (If none, write 'None')</label><input type="text" class="c-contact"></div>
+        </div>
+        <div class="grid" style="background:#f1f5f9; padding:15px; border-radius:6px; margin-top:10px;">
+          <div><label>Select Program *</label><select class="c-program">${progOptions}</select></div>
+          <div><label>Payment Method *</label><select class="c-paymentMethod"><option value="Monthly">Monthly</option><option value="Yearly (Discounted)">Yearly (Discounted)</option></select></div>
         </div>
       </div>`;
     document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', html);
   }
-  
-  window.onload = addChild;
+
+  window.onload = loadConfig;
 
   document.getElementById('academyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    const msg = document.getElementById('message');
-    
-    btn.disabled = true; 
-    btn.innerText = "Submitting... Please wait.";
-    msg.style.display = "none";
+    btn.disabled = true; btn.innerText = "Submitting...";
     
     const children = Array.from(document.querySelectorAll('.child-card')).map(card => ({
       name: card.querySelector('.c-name').value,
@@ -149,52 +120,27 @@
       dob: card.querySelector('.c-dob').value,
       grade: card.querySelector('.c-grade').value,
       studentEmail: card.querySelector('.c-studentEmail').value,
+      contact: card.querySelector('.c-contact').value,
       program: card.querySelector('.c-program').value,
       paymentMethod: card.querySelector('.c-paymentMethod').value
     }));
 
-    const payload = {
-      guardianName: document.getElementById('guardianName').value,
-      guardianContact: document.getElementById('guardianContact').value,
-      region: document.getElementById('region').value,
-      address: document.getElementById('address').value,
-      children: children
+    const payload = { 
+      formType: "🇺🇸 English Form", 
+      guardianName: document.getElementById('guardianName').value, 
+      guardianContact: document.getElementById('guardianContact').value, 
+      region: document.getElementById('region').value, 
+      address: document.getElementById('address').value, 
+      children 
     };
 
     try {
-      const response = await fetch(SCRIPT_URL, { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload) 
-      });
-
-      const resData = await response.json();
-
-      if (resData.result === 'duplicate') {
-        // Show English duplicate warning
-        alert(`Warning: The student [${resData.studentName || ''}] has already applied.\nPlease contact the academy for any changes.`);
-        btn.disabled = false; 
-        btn.innerText = "Submit Application";
-        return;
-      }
-
-      msg.innerText = "Application submitted successfully! Thank you.";
-      msg.style.display = "block";
-      msg.className = "success";
-      
-      e.target.reset();
-      document.getElementById('childrenContainer').innerHTML = '';
-      childCount = 0; 
-      addChild();
-      
-    } catch (error) { 
-      alert("A network error occurred. Please try again."); 
-    } finally { 
-      if (btn.disabled) {
-        btn.disabled = false; 
-        btn.innerText = "Submit Application";
-      }
-    }
+      const resp = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      const res = await resp.json();
+      if (res.result === 'duplicate') alert(`Already Applied: [${res.studentName}] student has been registered.`);
+      else { alert("Submitted successfully!"); location.reload(); }
+    } catch (err) { alert("An error occurred. Please try again."); }
+    finally { btn.disabled = false; btn.innerText = "Submit Application"; }
   });
 </script>
 </body>
