@@ -2,209 +2,150 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>필그림스 아카데미 지원서</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; background-color: #f1f5f9; color: #334155; padding: 20px; margin: 0; line-height: 1.6; }
-    .container { max-width: 700px; margin: 0 auto; background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); border-top: 8px solid #0f172a; }
-    
-    /* 상단 안내 문구 스타일 */
-    .header-box { background-color: #f8fafc; border: 1px solid #e2e8f0; padding: 25px; border-radius: 8px; margin-bottom: 30px; font-size: 14px; color: #475569; }
-    .header-box h2 { color: #0f172a; margin-top: 0; font-size: 18px; }
-    .price-tag { color: #2563eb; font-weight: bold; }
-    .contact-info { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #cbd5e1; font-weight: bold; }
-
-    h1 { text-align: center; color: #0f172a; margin-bottom: 5px; font-size: 26px; }
-    h3 { font-size: 18px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
-    
-    .section { margin-bottom: 35px; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-    
-    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; background-color: #fff; }
-    label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
-    
-    .child-card { background-color: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
-    .remove-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; color: #ef4444; font-size: 14px; cursor: pointer; font-weight: bold;}
-    .add-child-btn { background-color: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; font-weight: bold; }
-
-    .submit-btn { width: 100%; padding: 18px; background-color: #0f172a; color: white; border: none; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; }
-    .submit-btn:disabled { background-color: #94a3b8; cursor: not-allowed; }
-    #message { text-align: center; margin-top: 20px; font-weight: bold; display: none; }
-    .success { color: #16a34a; }
-    
-    @media (max-width: 600px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+    /* CSS 디자인 (원장님이 좋아하시는 네이비 테마 유지) */
+    body { font-family: 'Malgun Gothic', sans-serif; background: #f1f5f9; padding: 20px; color: #334155; line-height: 1.6; }
+    .container { max-width: 700px; margin: 0 auto; background: #fff; padding: 35px; border-radius: 12px; border-top: 8px solid #0f172a; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .header-box { background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 25px; border: 1px solid #e2e8f0; font-size: 14px; }
+    h1 { text-align: center; color: #0f172a; margin-bottom: 25px; }
+    h3 { border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px; color: #1e293b; display: flex; justify-content: space-between; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+    label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #475569; }
+    .child-card { border: 1px solid #e2e8f0; padding: 20px; border-radius: 10px; margin-bottom: 20px; position: relative; background: #fff; }
+    .add-btn { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; padding: 8px 15px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+    .submit-btn { width: 100%; padding: 18px; background: #0f172a; color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 30px; }
+    .submit-btn:disabled { background: #94a3b8; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  
-  <div style="text-align: right; margin-bottom: 10px;">
-    <a href="index_en.html" style="color: #2563eb; text-decoration: none; font-weight: bold; font-size: 14px;">🇺🇸 English Version</a>
-  </div>
+  <div style="text-align: right;"><a href="index_en.html" style="text-decoration: none; font-weight: bold; font-size: 13px; color: #2563eb;">🇺🇸 English Version</a></div>
+  <h1 id="academyName">필그림스 아카데미 지원서</h1>
 
-  <h1>필그림스 아카데미 지원서</h1>
-  
-  <div class="header-box">
-    <h2>Welcome to Pilgrims' Academy</h2>
-    <p>필그림스 아카데미에 방문해주셔서 감사합니다. ^^ <br>아래 정보를 확인해주시고 지원하고자 하시는 프로그램에 체크해주시기 바랍니다.</p>
-    
-    <strong>[등록비 안내]</strong><br>
-    • 매월 납부시: 홈스쿨 <span class="price-tag">월 40만원</span> / 방과후 30만원 / 랭기지 20만원<br>
-    • 1년 일시 납부시(한정기간): 홈스쿨 <span class="price-tag">연 400만원</span> / 방과후 300만원 / 랭기지 200만원
-    
-    <div class="contact-info">
-      문의: pilgrimsinternationalacademy@gmail.com / 010-9299-4377 이지수
-    </div>
+  <div class="header-box" id="headerContent">
+    <p id="welcomeMsg">정보를 불러오는 중...</p>
+    <div id="priceInfo"></div>
+    <div id="contactInfo" style="margin-top: 10px; padding-top: 10px; border-top: 1px dashed #ccc; font-weight: bold;"></div>
   </div>
 
   <form id="academyForm">
-    <div class="section">
+    <section>
       <h3>1. 보호자 정보</h3>
-      <div class="grid-2">
+      <div class="grid">
         <div><label>보호자 성함 *</label><input type="text" id="guardianName" required></div>
         <div><label>보호자 연락처 *</label><input type="tel" id="guardianContact" placeholder="010-0000-0000" required></div>
       </div>
-      <div class="grid-2">
-        <div><label>주거 지역 *</label><input type="text" id="region" placeholder="예: 서울시 강남구" required></div>
-        <div><label>자택주소 (교재 배송용) *</label><input type="text" id="address" required></div>
+      <div class="grid">
+        <div><label>주거 지역 *</label><input type="text" id="region" required></div>
+        <div><label>상세 주소 (교재 배송용) *</label><input type="text" id="address" required></div>
       </div>
-    </div>
+    </section>
 
-    <div class="section">
-      <h3>
-        2. 자녀 지원 정보
-        <button type="button" class="add-child-btn" onclick="addChild()">+ 자녀 추가</button>
-      </h3>
+    <section>
+      <h3>2. 자녀 지원 정보 <button type="button" class="add-btn" onclick="addChild()">+ 자녀 추가</button></h3>
       <div id="childrenContainer"></div>
-    </div>
+    </section>
 
     <button type="submit" id="submitBtn" class="submit-btn">지원서 제출하기</button>
-    <div id="message"></div>
   </form>
 </div>
 
 <script>
-  // 💡 매우 중요: 여기에 구글 앱스 스크립트 배포 URL을 넣어주세요!
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby14cbs69I2XSXs1OIusd3k8UyFtBvfkTYQDQPuAD2TXHCAoOB_aXGOqXhdgdvzadPv/exec";
-  
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYFtCe0D6GuTxNHx4TXtxJ-Sjj0IFNDhKMzIEkykUk9fQWWolA3DcRqhaXcc3LIu_FoQ/exec";
   let childCount = 0;
+  let programOptions = [];
 
-  // 자녀 카드 추가 함수
-  function addChild() {
-    if (childCount >= 5) {
-      alert("최대 5명까지만 등록 가능합니다.");
-      return;
+  // [중요] 시트에서 설정값 및 프로그램 목록 가져오기
+  async function loadSettings() {
+    try {
+      const response = await fetch(`${SCRIPT_URL}?type=config`);
+      const config = await response.json();
+      
+      // 상단 문구 반영
+      document.getElementById('welcomeMsg').innerText = config.general.welcome_msg.ko;
+      document.getElementById('contactInfo').innerText = `문의: ${config.general.contact_email.ko} / ${config.general.contact_phone.ko}`;
+      
+      // 프로그램 리스트 저장
+      programOptions = config.programs;
+      
+      // 가격 안내 자동 생성
+      let priceHtml = "<strong>[등록비 안내]</strong><br>";
+      config.programs.forEach(p => { priceHtml += `• ${p.ko}<br>`; });
+      document.getElementById('priceInfo').innerHTML = priceHtml;
+
+      // 첫 자녀 카드 자동 추가
+      addChild();
+    } catch (e) {
+      alert("설정을 불러오는데 실패했습니다. URL을 확인하세요.");
     }
+  }
+
+  function addChild() {
     childCount++;
     const id = Date.now();
+    // 시트에서 가져온 프로그램을 드롭다운으로 생성
+    let optionsHtml = programOptions.map(p => `<option value="${p.ko}">${p.ko}</option>`).join('');
+    
     const html = `
       <div class="child-card" id="child-${id}">
-        ${childCount > 1 ? `<button type="button" class="remove-btn" onclick="document.getElementById('child-${id}').remove(); childCount--;">삭제 ✕</button>` : ''}
-        <div class="grid-2">
+        ${childCount > 1 ? `<button type="button" style="position:absolute; top:15px; right:15px; color:red; border:none; background:none; cursor:pointer;" onclick="document.getElementById('child-${id}').remove(); childCount--;">✕ 삭제</button>` : ''}
+        <div class="grid">
           <div><label>자녀 성함 *</label><input type="text" class="c-name" required></div>
-          <div><label>영문 성함 (여권동일) *</label><input type="text" class="c-engName" required></div>
+          <div><label>영문 이름 (여권동일) *</label><input type="text" class="c-engName" required></div>
         </div>
-        <div class="grid-3">
-          <div><label>성별 *</label><select class="c-gender" required><option value="남">남</option><option value="여">여</option></select></div>
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr;">
+          <div><label>성별 *</label><select class="c-gender"><option value="남">남</option><option value="여">여</option></select></div>
           <div><label>생년월일 *</label><input type="date" class="c-dob" required></div>
           <div><label>한국 학년 *</label><input type="text" class="c-grade" placeholder="예: 초3" required></div>
         </div>
-        <div class="grid-2">
+        <div class="grid">
           <div><label>학생 구글 이메일 *</label><input type="email" class="c-studentEmail" required></div>
           <div><label>자녀 연락처 (없으면 '없음')</label><input type="text" class="c-contact"></div>
         </div>
-        <div class="grid-2" style="margin-top:10px; background:#f1f5f9; padding:15px; border-radius:6px;">
-          <div><label>지원 프로그램 *</label>
-            <select class="c-program" required>
-              <option value="홈스쿨 과정">홈스쿨 과정</option>
-              <option value="방과후 과정">방과후 과정</option>
-              <option value="랭기지 코스">랭기지 코스</option>
-            </select>
-          </div>
-          <div><label>납부 방식 *</label>
-            <select class="c-paymentMethod" required>
-              <option value="매월 납부 (매월 1일)">매월 납부 (매월 1일)</option>
-              <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인 적용)</option>
-            </select>
-          </div>
+        <div class="grid" style="background:#f8fafc; padding:15px; border-radius:6px; margin-top:10px; border:1px solid #e2e8f0;">
+          <div><label>지원 프로그램 *</label><select class="c-program">${optionsHtml}</select></div>
+          <div><label>납부 방식 *</label><select class="c-paymentMethod"><option value="매월 납부">매월 납부</option><option value="1년 일시 납부">1년 일시 납부 (할인)</option></select></div>
         </div>
       </div>`;
     document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', html);
   }
-  
-  // 페이지가 처음 열릴 때 자녀 1명 기본 셋팅
-  window.onload = addChild;
 
-  // 폼 제출 기능 (중복 확인 포함)
+  window.onload = loadSettings;
+
   document.getElementById('academyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    const msg = document.getElementById('message');
+    btn.disabled = true; btn.innerText = "제출 중...";
     
-    btn.disabled = true; 
-    btn.innerText = "제출 중입니다. 잠시만 기다려주세요...";
-    msg.style.display = "none";
-    
-    // 데이터 모으기
     const children = Array.from(document.querySelectorAll('.child-card')).map(card => ({
       name: card.querySelector('.c-name').value,
       engName: card.querySelector('.c-engName').value,
       gender: card.querySelector('.c-gender').value,
       dob: card.querySelector('.c-dob').value,
       grade: card.querySelector('.c-grade').value,
-      contact: card.querySelector('.c-contact').value,
       studentEmail: card.querySelector('.c-studentEmail').value,
+      contact: card.querySelector('.c-contact').value,
       program: card.querySelector('.c-program').value,
       paymentMethod: card.querySelector('.c-paymentMethod').value
     }));
 
-    const payload = {
-      guardianName: document.getElementById('guardianName').value,
-      guardianContact: document.getElementById('guardianContact').value,
-      region: document.getElementById('region').value,
-      address: document.getElementById('address').value,
-      children: children
-    };
+    const payload = { formType: "🇰🇷 한국어 폼", guardianName: document.getElementById('guardianName').value, guardianContact: document.getElementById('guardianContact').value, region: document.getElementById('region').value, address: document.getElementById('address').value, children };
 
     try {
-      // 구글로 데이터 전송 (CORS 문제 우회를 위해 text/plain 사용)
-      const response = await fetch(SCRIPT_URL, { 
-        method: 'POST', 
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload) 
-      });
-
-      // 구글 서버의 대답(중복 여부 등)을 읽어옴
-      const resData = await response.json();
-
-      // 만약 이미 제출된 학생이라면?
+      const resp = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      const resData = await resp.json();
       if (resData.result === 'duplicate') {
-        alert(resData.message); // 화면에 경고창 띄우기
-        btn.disabled = false; 
-        btn.innerText = "지원서 제출하기";
-        return; // 여기서 더 진행하지 않고 멈춤
+        alert(`이미 [${resData.studentName}] 학생의 지원서가 존재합니다.`);
+      } else {
+        alert("성공적으로 제출되었습니다!");
+        location.reload();
       }
-
-      // 정상 접수되었을 때
-      msg.innerText = "지원서가 성공적으로 접수되었습니다. 감사합니다!";
-      msg.style.display = "block";
-      msg.className = "success";
-      
-      e.target.reset(); // 입력칸 초기화
-      document.getElementById('childrenContainer').innerHTML = ''; // 자녀칸 싹 지우기
-      childCount = 0; 
-      addChild(); // 다시 빈 자녀 1명 띄우기
-      
-    } catch (error) { 
-      alert("제출 중 네트워크 오류가 발생했습니다. 다시 시도해주세요."); 
-    } finally { 
-      if (btn.disabled) {
-        btn.disabled = false; 
-        btn.innerText = "지원서 제출하기";
-      }
-    }
+    } catch (err) { alert("제출 중 오류가 발생했습니다."); }
+    finally { btn.disabled = false; btn.innerText = "지원서 제출하기"; }
   });
 </script>
 </body>
