@@ -1,14 +1,192 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2022.7">
-  <style type="text/css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>필그림스 아카데미 지원 관리</title>
+  <style>
+    body { font-family: 'Malgun Gothic', sans-serif; background: #f1f5f9; color: #334155; padding: 20px; line-height: 1.6; }
+    .container { max-width: 500px; margin: 40px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 8px solid #0f172a; }
+    h1 { text-align: center; color: #0f172a; margin-bottom: 20px; font-size: 24px; }
+    p.desc { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 30px; }
+    
+    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; margin-bottom: 15px; font-size: 14px;}
+    label { display: block; font-size: 13px; font-weight: bold; color: #1e40af; margin-bottom: 5px; }
+    
+    .btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-bottom: 10px;}
+    .btn-search { background: #0f172a; }
+    .btn-update { background: #2563eb; }
+    .btn-cancel { background: #ef4444; }
+    .btn:disabled { background: #cbd5e1; cursor: not-allowed; }
+
+    .status-badge { display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; margin-bottom: 20px; }
+    .status-done { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+    .status-ing { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+    
+    #editSection { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #cbd5e1; }
+    .readonly-text { padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; margin-bottom: 15px; color: #64748b; }
   </style>
 </head>
 <body>
+
+<div class="container">
+  <h1>지원 정보 조회 및 관리</h1>
+  
+  <div id="searchSection">
+    <p class="desc">제출하신 자녀의 이름과 학생 이메일을 입력해주세요.</p>
+    <label>자녀 이름</label>
+    <input type="text" id="lookupName" placeholder="홍길동">
+    <label>학생 구글 이메일</label>
+    <input type="email" id="lookupEmail" placeholder="example@gmail.com">
+    <button class="btn btn-search" onclick="lookupApplication()">조회하기</button>
+  </div>
+
+  <div id="editSection">
+    <div style="text-align: center;" id="statusContainer"></div>
+    
+    <label>자녀 이름 / 영문명</label>
+    <div class="readonly-text" id="dispName"></div>
+
+    <label>학년 / 성별</label>
+    <div class="readonly-text" id="dispGrade"></div>
+
+    <label>자녀 연락처 (수정 가능)</label>
+    <input type="text" id="editContact">
+
+    <label>지원 프로그램 (수정 가능)</label>
+    <select id="editProgram"></select>
+
+    <label>납부 방식 (수정 가능)</label>
+    <select id="editPayment">
+      <option value="매월 납부 (매월 1일)">매월 납부</option>
+      <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인)</option>
+    </select>
+
+    <div id="actionButtons" style="margin-top: 25px;">
+      <button class="btn btn-update" onclick="updateApplication()">수정 내용 저장</button>
+      <button class="btn btn-cancel" onclick="cancelApplication()">지원 취소하기</button>
+    </div>
+    
+    <button class="btn" style="background: #e2e8f0; color: #334155; margin-top: 10px;" onclick="location.reload()">처음으로 돌아가기</button>
+  </div>
+</div>
+
+<script>
+  // 💡 여기에 원장님의 '새 배포 URL'을 넣으세요. (이전과 동일한 주소 체계 사용)
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxYFtCe0D6GuTxNHx4TXtxJ-Sjj0IFNDhKMzIEkykUk9fQWWolA3DcRqhaXcc3LIu_FoQ/exec";
+  
+  let currentStudent = {};
+
+  // 시트에서 설정(프로그램 목록) 불러와서 드롭다운 세팅
+  async function loadPrograms() {
+    try {
+      const resp = await fetch(`${SCRIPT_URL}?type=config`);
+      const config = await resp.json();
+      const progSelect = document.getElementById('editProgram');
+      config.programs.forEach(p => {
+        progSelect.innerHTML += `<option value="${p.ko}">${p.ko}</option>`;
+      });
+    } catch (e) { console.log('프로그램 목록 로드 실패'); }
+  }
+  window.onload = loadPrograms;
+
+  // [조회하기]
+  async function lookupApplication() {
+    const name = document.getElementById('lookupName').value.trim();
+    const email = document.getElementById('lookupEmail').value.trim();
+    if(!name || !email) return alert('이름과 이메일을 모두 입력해주세요.');
+
+    const btn = document.querySelector('.btn-search');
+    btn.innerText = "조회 중..."; btn.disabled = true;
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: 'lookup', childName: name, studentEmail: email })
+      });
+      const res = await response.json();
+
+      if (res.result === 'not_found') {
+        alert('일치하는 지원 정보를 찾을 수 없습니다.');
+      } else {
+        // 데이터 매핑
+        currentStudent = res.student;
+        document.getElementById('searchSection').style.display = 'none';
+        document.getElementById('editSection').style.display = 'block';
+        
+        document.getElementById('dispName').innerText = `${res.student.name} (${res.student.engName})`;
+        document.getElementById('dispGrade').innerText = `${res.student.grade} / ${res.student.gender}`;
+        document.getElementById('editContact').value = res.student.contact;
+        document.getElementById('editProgram').value = res.student.program;
+        document.getElementById('editPayment').value = res.student.payment;
+
+        // 🚨 규칙 #1: 등록 완료 상태면 수정/취소 버튼 숨기고 막기
+        const statusDiv = document.getElementById('statusContainer');
+        if (res.status === '🔵 등록 완료') {
+          statusDiv.innerHTML = `<span class="status-badge status-done">✔ 등록 완료 (수정 불가)</span>`;
+          document.getElementById('editContact').disabled = true;
+          document.getElementById('editProgram').disabled = true;
+          document.getElementById('editPayment').disabled = true;
+          document.getElementById('actionButtons').style.display = 'none'; // 버튼 숨김
+        } else if (res.status === '⚫ 취소/보류') {
+          statusDiv.innerHTML = `<span class="status-badge" style="background:#f1f5f9; color:#475569;">지원 취소됨</span>`;
+          document.getElementById('actionButtons').style.display = 'none';
+        } else {
+          statusDiv.innerHTML = `<span class="status-badge status-ing">진행 상태: ${res.status}</span>`;
+        }
+      }
+    } catch(e) { alert('오류가 발생했습니다.'); }
+    finally { btn.innerText = "조회하기"; btn.disabled = false; }
+  }
+
+  // [수정하기]
+  async function updateApplication() {
+    if(!confirm('정보를 수정하시겠습니까?')) return;
+    
+    const updateData = {
+      contact: document.getElementById('editContact').value,
+      program: document.getElementById('editProgram').value,
+      payment: document.getElementById('editPayment').value
+    };
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ 
+          action: 'update', 
+          childName: currentStudent.name, 
+          studentEmail: currentStudent.email,
+          updateData: updateData
+        })
+      });
+      const res = await response.json();
+      if(res.result === 'success') {
+        alert('수정이 완료되었습니다.');
+      } else { alert(res.message); }
+    } catch(e) { alert('수정 중 오류가 발생했습니다.'); }
+  }
+
+  // [취소하기]
+  async function cancelApplication() {
+    // 🚨 규칙 #2: 등록 전이면 취소 가능
+    if(!confirm('정말 지원을 취소하시겠습니까?\n취소 후에는 복구할 수 없습니다.')) return;
+
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ 
+          action: 'cancel', 
+          childName: currentStudent.name, 
+          studentEmail: currentStudent.email
+        })
+      });
+      const res = await response.json();
+      if(res.result === 'success') {
+        alert('지원이 취소되었습니다.');
+        location.reload(); // 화면 새로고침
+      } else { alert(res.message); }
+    } catch(e) { alert('오류가 발생했습니다.'); }
+  }
+</script>
 </body>
 </html>
