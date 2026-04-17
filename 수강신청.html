@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.65">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Apple SD Gothic Neo'}
+    span.s1 {font: 12.0px 'Apple SD Gothic Neo'}
+    span.s2 {font: 12.0px 'Apple Color Emoji'}
+    span.s3 {font: 12.0px Helvetica}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="ko"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;<span class="s1">세부</span> <span class="s1">학습</span> <span class="s1">코스</span> <span class="s1">신청</span>&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: 'Malgun Gothic', sans-serif; background: #f8fafc; padding: 20px; color: #334155; line-height: 1.6; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.container { max-width: 600px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 6px solid #10b981; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>h2 { text-align: center; color: #0f172a; margin-top: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>p.desc { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 25px; }</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>input[type="text"], input[type="tel"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>label.block-label { font-size: 12px; font-weight: bold; color: #047857; display: block; margin-bottom: 4px; }</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; font-size: 15px; margin-bottom: 10px;}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-primary { background: #10b981; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn-secondary { background: #0f172a; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.btn:disabled { background: #94a3b8 !important; cursor: not-allowed; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>#courseArea { display: none; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.student-badge { display: inline-block; padding: 5px 12px; background: #d1fae5; color: #065f46; font-weight: bold; border-radius: 20px; font-size: 13px; margin-bottom: 15px; }</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.course-card { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.course-header { font-weight: bold; color: #1e293b; font-size: 14px; margin-bottom: 10px; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; }</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>.checkbox-item { display: flex; align-items: flex-start; margin-bottom: 10px; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.checkbox-item input { margin-top: 4px; margin-right: 10px; transform: scale(1.2); cursor: pointer; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.checkbox-item label { font-size: 13px; cursor: pointer; display: flex; flex-direction: column; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>.file-name { color: #2563eb; font-size: 12px; margin-top: 2px; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;div class="container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;h2&gt;<span class="s1">세부</span> <span class="s1">학습</span> <span class="s1">코스</span> <span class="s1">확정</span>&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;p class="desc"&gt;<span class="s1">등록이</span> <span class="s1">완료된</span> <span class="s1">자녀의</span> <span class="s1">세부</span> <span class="s1">교재</span> <span class="s1">및</span> <span class="s1">학습</span> <span class="s1">폴더를</span> <span class="s1">배정합니다</span>.&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">  </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="loginArea"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label class="block-label"&gt;<span class="s1">보호자</span> <span class="s1">성함</span>&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="text" id="gName" placeholder="<span class="s1">예</span>: <span class="s1">홍길동</span>"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;label class="block-label"&gt;<span class="s1">보호자</span> <span class="s1">연락처</span>&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;input type="tel" id="gContact" placeholder="<span class="s1">예</span>: 01012345678"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-secondary" id="loginBtn" onclick="login()"&gt;<span class="s1">학생</span> <span class="s1">정보</span> <span class="s1">불러오기</span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="courseArea"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="studentContainer"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button class="btn btn-primary" id="submitBtn" onclick="submitCourses()"&gt;<span class="s1">선택</span> <span class="s1">코스</span> <span class="s1">최종</span> <span class="s1">제출하기</span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
+<p class="p1">&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>// <span class="s2">💡</span> [<span class="s1">필수</span>] <span class="s1">방금</span> <span class="s1">새로</span> <span class="s1">배포한</span> SCRIPT_URL<span class="s1">을</span> <span class="s1">넣어주세요</span>!</p>
+<p class="p1"><span class="Apple-converted-space">  </span>const SCRIPT_URL = "<span class="s1">여기에</span>_<span class="s1">원장님의</span>_<span class="s1">배포</span>_URL<span class="s1">을</span>_<span class="s1">넣으세요</span>";</p>
+<p class="p2"><span class="Apple-converted-space">  </span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>let currentStudent = null;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>let loadedCourses = [];</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// [1<span class="s1">단계</span>] <span class="s1">보호자</span> <span class="s1">정보로</span> <span class="s1">학생</span> <span class="s1">조회</span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function login() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const name = document.getElementById('gName').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const contact = document.getElementById('gContact').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!name || !contact) return alert("<span class="s1">보호자</span> <span class="s1">성함과</span> <span class="s1">연락처를</span> <span class="s1">입력해주세요</span>.");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const btn = document.getElementById('loginBtn');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.disabled = true; btn.innerText = "<span class="s1">조회</span> <span class="s1">중</span>...";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const resp = await fetch(SCRIPT_URL, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headers: { 'Content-Type': 'text/plain;charset=utf-8' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ action: 'lookup', guardianName: name, guardianContact: contact })</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = await resp.json();</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(data.result === 'not_found') return alert("<span class="s1">일치하는</span> <span class="s1">학생</span> <span class="s1">정보를</span> <span class="s1">찾을</span> <span class="s1">수</span> <span class="s1">없습니다</span>.");</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-converted-space">      </span>// '</span>등록<span class="s3"> </span>완료<span class="s3">' </span>상태인<span class="s3"> </span>자녀만<span class="s3"> </span>필터링<span class="s3"> (</span>일단<span class="s3"> </span>첫<span class="s3"> </span>번째<span class="s3"> </span>자녀를<span class="s3"> </span>기준으로<span class="s3"> </span>세팅<span class="s3">)</span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>const enrolledChildren = data.children.filter(c =&gt; c.status === '<span class="s2">🔵</span> <span class="s1">등록</span> <span class="s1">완료</span>');</p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(enrolledChildren.length === 0) return alert("<span class="s1">아직</span> '<span class="s1">등록</span> <span class="s1">완료</span>' <span class="s1">처리된</span> <span class="s1">자녀가</span> <span class="s1">없습니다</span>. <span class="s1">학원으로</span> <span class="s1">문의해주세요</span>.");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>currentStudent = enrolledChildren[0]; // <span class="s1">다자녀일</span> <span class="s1">경우</span> <span class="s1">확장을</span> <span class="s1">위한</span> <span class="s1">베이스</span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>fetchCourseMap(currentStudent);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch(e) { alert("<span class="s1">통신</span> <span class="s1">오류가</span> <span class="s1">발생했습니다</span>."); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>finally { btn.disabled = false; btn.innerText = "<span class="s1">학생</span> <span class="s1">정보</span> <span class="s1">불러오기</span>"; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// [2<span class="s1">단계</span>] <span class="s1">자녀의</span> <span class="s1">학년과</span> <span class="s1">프로그램에</span> <span class="s1">맞는</span> Custom Programs <span class="s1">맵핑</span> <span class="s1">가져오기</span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function fetchCourseMap(student) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('loginArea').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('courseArea').style.display = 'block';</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const container = document.getElementById('studentContainer');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>container.innerHTML = `&lt;p style="text-align:center;"&gt;<span class="s1">맵핑된</span> <span class="s1">코스를</span> <span class="s1">불러오는</span> <span class="s1">중입니다</span>...&lt;/p&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const resp = await fetch(SCRIPT_URL, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headers: { 'Content-Type': 'text/plain;charset=utf-8' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify({ action: 'get_map', program: student.program, grade: student.grade })</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = await resp.json();</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(data.result === 'success' &amp;&amp; data.courses.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>loadedCourses = data.courses;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>renderCourses(student, loadedCourses);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>container.innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="student-badge"&gt;${student.name} (${student.grade})&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;p style="color:#ef4444; font-size:14px; text-align:center;"&gt;<span class="s1">매핑된</span> <span class="s1">학습</span> <span class="s1">코스가</span> <span class="s1">없습니다</span>.&lt;br&gt;<span class="s1">지원서의</span> '<span class="s1">학년</span>' <span class="s1">형식과</span> Custom Programs <span class="s1">시트의</span> 'Grade' <span class="s1">형식이</span> <span class="s1">일치하는지</span> <span class="s1">확인해</span> <span class="s1">주세요</span>.&lt;/p&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('submitBtn').style.display = 'none';</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch(e) { alert("<span class="s1">코스</span> <span class="s1">맵핑</span> <span class="s1">로드</span> <span class="s1">오류</span>"); }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p3"><span class="s3"><span class="Apple-converted-space">  </span>// [3</span>단계<span class="s3">] </span>체크박스<span class="s3"> </span>리스트<span class="s3"> </span>렌더링<span class="s3"> (</span>기본적으로<span class="s3"> </span>모두<span class="s3"> </span>체크됨<span class="s3">)</span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>function renderCourses(student, courses) {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>let html = `&lt;div class="student-badge"&gt;${student.name} (${student.program} / ${student.grade})&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>html += `&lt;p style="font-size:13px; color:#475569; margin-bottom:15px;"&gt;<span class="s1">기본</span> <span class="s1">배정된</span> <span class="s1">과목입니다</span>. <span class="s1">수강하지</span> <span class="s1">않을</span> <span class="s1">과목은</span> <span class="s1">체크를</span> <span class="s1">해제해</span> <span class="s1">주세요</span>.&lt;/p&gt;`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>// Details(<span class="s1">예</span>: English / W&amp;G) <span class="s1">기준으로</span> <span class="s1">그룹화</span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const grouped = courses.reduce((acc, obj) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>acc[obj.details] = acc[obj.details] || [];</p>
+<p class="p1"><span class="Apple-converted-space">      </span>acc[obj.details].push(obj);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>return acc;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}, {});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>for (const [detailName, items] of Object.entries(grouped)) {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += `&lt;div class="course-card"&gt;&lt;div class="course-header"&gt;<span class="s2">📘</span> ${detailName}&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>items.forEach((item, idx) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// value<span class="s1">에</span> <span class="s1">객체</span> <span class="s1">정보를</span> <span class="s1">담아두어</span> <span class="s1">나중에</span> <span class="s1">서버로</span> <span class="s1">보낼</span> <span class="s1">때</span> <span class="s1">사용</span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const itemData = encodeURIComponent(JSON.stringify(item));</p>
+<p class="p1"><span class="Apple-converted-space">        </span>html += `</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;div class="checkbox-item"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;input type="checkbox" id="chk_${detailName}_${idx}" value="${itemData}" checked&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;label for="chk_${detailName}_${idx}"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span style="font-weight:bold;"&gt;${item.folder}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">              </span>&lt;span class="file-name"&gt;<span class="s1">교재</span>: ${item.file}&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>html += `&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>document.getElementById('studentContainer').innerHTML = html;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">  </span>// [4<span class="s1">단계</span>] <span class="s1">선택된</span> <span class="s1">코스</span> <span class="s1">서버</span>(Classroom Roster)<span class="s1">로</span> <span class="s1">전송</span></p>
+<p class="p1"><span class="Apple-converted-space">  </span>async function submitCourses() {</p>
+<p class="p1"><span class="Apple-converted-space">    </span>const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(checkboxes.length === 0) return alert("<span class="s1">최소</span> 1<span class="s1">개</span> <span class="s1">이상의</span> <span class="s1">코스를</span> <span class="s1">선택해야</span> <span class="s1">합니다</span>.");</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>if(!confirm(`<span class="s1">총</span> ${checkboxes.length}<span class="s1">개의</span> <span class="s1">세부</span> <span class="s1">코스를</span> <span class="s1">확정하시겠습니까</span>?`)) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const btn = document.getElementById('submitBtn');</p>
+<p class="p1"><span class="Apple-converted-space">    </span>btn.disabled = true; btn.innerText = "<span class="s1">제출</span> <span class="s1">중</span>...";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>const selectedCourses = Array.from(checkboxes).map(chk =&gt; JSON.parse(decodeURIComponent(chk.value)));</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const resp = await fetch(SCRIPT_URL, {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">        </span>headers: { 'Content-Type': 'text/plain;charset=utf-8' },</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body: JSON.stringify({<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>action: 'submit_courses',<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">          </span>childName: currentStudent.name,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>program: currentStudent.program,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>grade: currentStudent.grade,</p>
+<p class="p1"><span class="Apple-converted-space">          </span>selectedCourses: selectedCourses</p>
+<p class="p1"><span class="Apple-converted-space">        </span>})</p>
+<p class="p1"><span class="Apple-converted-space">      </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>const data = await resp.json();</p>
+<p class="p2"><span class="Apple-converted-space">      </span></p>
+<p class="p1"><span class="Apple-converted-space">      </span>if(data.result === 'success') {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>alert("<span class="s1">세부</span> <span class="s1">코스</span> <span class="s1">신청이</span> <span class="s1">완료되었습니다</span>!\nClassroom Roster<span class="s1">에</span> <span class="s1">정상</span> <span class="s1">배정되었습니다</span>.");</p>
+<p class="p1"><span class="Apple-converted-space">        </span>location.reload();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>} else alert("<span class="s1">오류</span>: " + data.message);</p>
+<p class="p1"><span class="Apple-converted-space">    </span>} catch(e) { alert("<span class="s1">제출</span> <span class="s1">중</span> <span class="s1">오류가</span> <span class="s1">발생했습니다</span>."); }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>finally { btn.disabled = false; btn.innerText = "<span class="s1">선택</span> <span class="s1">코스</span> <span class="s1">최종</span> <span class="s1">제출하기</span>"; }</p>
+<p class="p1"><span class="Apple-converted-space">  </span>}</p>
+<p class="p1">&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
