@@ -2,233 +2,192 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>필그림스 통합 지원 관리</title>
+  <title>세부 학습 코스 신청</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Malgun Gothic', sans-serif; background: #f1f5f9; padding: 20px; color: #334155; line-height: 1.6; }
-    .container { max-width: 600px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 6px solid #2563eb; }
+    body { font-family: 'Malgun Gothic', sans-serif; background: #f8fafc; padding: 20px; color: #334155; line-height: 1.6; }
+    .container { max-width: 600px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 6px solid #10b981; }
     h2 { text-align: center; color: #0f172a; margin-top: 0; }
-    h3 { font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; color: #1e293b; margin-top: 25px; }
-    input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
-    input:disabled, select:disabled { background: #f1f5f9; cursor: not-allowed; color: #64748b; opacity: 0.8; }
-    label { font-size: 12px; font-weight: bold; color: #1e40af; display: block; margin-bottom: 4px; }
+    p.desc { text-align: center; font-size: 13px; color: #64748b; margin-bottom: 25px; }
+    
+    input[type="text"], input[type="tel"] { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+    label.block-label { font-size: 12px; font-weight: bold; color: #047857; display: block; margin-bottom: 4px; }
     
     .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; font-size: 15px; margin-bottom: 10px;}
-    .btn-search { background: #0f172a; }
-    .btn-update { background: #2563eb; margin-top: 20px; }
-    .btn-cancel { background: #ef4444; width: auto; padding: 8px 15px; font-size: 12px; float: right; margin-top: -35px; position: relative; z-index: 10;}
+    .btn-primary { background: #10b981; }
+    .btn-secondary { background: #0f172a; }
+    .btn:disabled { background: #94a3b8 !important; cursor: not-allowed; }
+
+    #courseArea { display: none; }
+    .student-badge { display: inline-block; padding: 5px 12px; background: #d1fae5; color: #065f46; font-weight: bold; border-radius: 20px; font-size: 13px; margin-bottom: 15px; }
     
-    #infoArea { display: none; }
-    .child-card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 15px; position: relative; }
-    .status-badge { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 15px; background: #e2e8f0; }
-    .done-status { background: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .readonly-text { font-size: 14px; font-weight: bold; margin-bottom: 15px; color: #334155; }
+    .course-card { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 8px; padding: 15px; margin-bottom: 10px; }
+    .course-header { font-weight: bold; color: #1e293b; font-size: 14px; margin-bottom: 10px; border-bottom: 1px solid #cbd5e1; padding-bottom: 5px; }
+    
+    .checkbox-item { display: flex; align-items: flex-start; margin-bottom: 10px; }
+    .checkbox-item input { margin-top: 4px; margin-right: 10px; transform: scale(1.2); cursor: pointer; }
+    .checkbox-item label { font-size: 13px; cursor: pointer; display: flex; flex-direction: column; }
+    .file-name { color: #2563eb; font-size: 12px; margin-top: 2px; }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <h2>지원 정보 통합 관리</h2>
+  <h2>클래스 및 교재 배정 신청</h2>
+  <p class="desc">등록이 완료된 학생의 세부 학습 폴더 및 교재를 배정합니다.</p>
   
-  <div id="searchArea">
-    <p style="text-align:center; font-size:13px; color:#64748b; margin-bottom:20px;">지원서 제출 시 입력한 보호자 정보를 입력해 주세요.</p>
-    <label>보호자 성함</label>
-    <input type="text" id="lookGName" placeholder="예: 홍길동">
+  <div id="loginArea">
+    <label class="block-label">보호자 성함</label>
+    <input type="text" id="gName" placeholder="예: 홍길동">
     
-    <label>보호자 연락처</label>
-    <input type="tel" id="lookGContact" placeholder="예: 01012345678">
+    <label class="block-label">보호자 연락처</label>
+    <input type="tel" id="gContact" placeholder="예: 01012345678">
     
-    <button class="btn btn-search" id="searchBtn" onclick="lookup()">내역 조회하기</button>
+    <button class="btn btn-secondary" id="loginBtn" onclick="login()">등록된 자녀 정보 불러오기</button>
   </div>
 
-  <div id="infoArea">
-    <h3>👨‍👩‍👧 보호자 정보 (수정 가능)</h3>
-    <div class="grid-2">
-      <div><label>보호자 성함</label><input type="text" id="gName"></div>
-      <div><label>보호자 연락처</label><input type="text" id="gContact"></div>
-    </div>
-    <div class="grid-2">
-      <div><label>거주 지역</label><input type="text" id="gRegion"></div>
-      <div><label>상세 주소</label><input type="text" id="gAddress"></div>
-    </div>
-
-    <h3>🎒 자녀 지원 정보</h3>
-    <div id="childrenList"></div>
-
-    <button class="btn btn-update" id="saveBtn" onclick="updateAll()">전체 수정 내용 저장하기</button>
-    <button class="btn" style="background: #64748b;" onclick="location.reload()">처음으로 돌아가기</button>
+  <div id="courseArea">
+    <div id="studentContainer"></div>
+    <button class="btn btn-primary" id="submitBtn" onclick="submitCourses()">선택 코스 최종 확정하기</button>
+    <button class="btn" style="background:#e2e8f0; color:#475569;" onclick="location.reload()">처음으로 돌아가기</button>
   </div>
 </div>
 
 <script>
-  // 💡 [필수] 구글 스크립트에서 [새 배포] 후 나온 URL을 아래에 넣어주세요. (따옴표 필수!)
+  // 💡 구글에서 '새 버전'으로 배포한 URL을 넣어주세요!
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuiX6ZbdjR3UQX8pxdDq-ujEpRByack-H718xEHhWOxaxYtDOgdFOMjamPnx2AmHCYWQ/exec";
   
-  let globalChildren = [];
-  let availablePrograms = [];
+  let currentStudent = null;
+  let loadedCourses = [];
 
-  // [1. 통합 조회]
-  async function lookup() {
-    const reqName = document.getElementById('lookGName').value;
-    const reqContact = document.getElementById('lookGContact').value;
-    
-    if(!reqName || !reqContact) return alert("보호자 성함과 연락처를 모두 입력해주세요.");
+  // [1단계] 보호자 정보로 학생 조회
+  async function login() {
+    const name = document.getElementById('gName').value.trim();
+    const contact = document.getElementById('gContact').value.trim();
+    if(!name || !contact) return alert("보호자 성함과 연락처를 입력해주세요.");
 
-    const btn = document.getElementById('searchBtn');
-    btn.innerText = "조회 중입니다..."; 
-    btn.disabled = true;
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true; btn.innerText = "조회 중...";
 
     try {
-      // 💡 CORS 에러 방지를 위해 redirect: "follow" 가 올바르게 추가되었습니다.
       const resp = await fetch(SCRIPT_URL, {
-        redirect: "follow",
+        redirect: "follow", // 💡 CORS 방어!
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'lookup', guardianName: reqName, guardianContact: reqContact })
+        body: JSON.stringify({ action: 'lookup', guardianName: name, guardianContact: contact })
       });
-      
       const data = await resp.json();
       
-      if(data.result === 'not_found') {
-        alert("일치하는 정보를 찾을 수 없습니다.\n입력하신 성함과 번호를 다시 확인해주세요.");
-        return;
-      }
+      if(data.result === 'not_found') return alert("일치하는 학생 정보를 찾을 수 없습니다.");
 
-      availablePrograms = data.programs;
-      globalChildren = data.children;
+      // '등록 완료' 상태인 자녀만 추출
+      const enrolledChildren = data.children.filter(c => c.status === '🔵 등록 완료');
+      if(enrolledChildren.length === 0) return alert("아직 '등록 완료' 처리된 자녀가 없습니다. 학원으로 먼저 문의해주세요.");
 
-      document.getElementById('searchArea').style.display = 'none';
-      document.getElementById('infoArea').style.display = 'block';
-      
-      document.getElementById('gName').value = data.guardian.name;
-      document.getElementById('gContact').value = data.guardian.contact;
-      document.getElementById('gRegion').value = data.guardian.region;
-      document.getElementById('gAddress').value = data.guardian.address;
+      // 첫 번째 자녀 기준으로 세팅 (필요시 다자녀 확장 가능)
+      currentStudent = enrolledChildren[0]; 
+      fetchCourseMap(currentStudent);
 
-      renderChildren();
-      
-    } catch(e) { 
-      alert("통신 오류가 발생했습니다.\nSCRIPT_URL 주소가 맞는지 확인해 주세요."); 
-      console.error(e);
-    } finally { 
-      btn.innerText = "내역 조회하기"; 
-      btn.disabled = false; 
-    }
+    } catch(e) { alert("통신 오류가 발생했습니다. 주소를 확인해주세요."); }
+    finally { btn.disabled = false; btn.innerText = "등록된 자녀 정보 불러오기"; }
   }
 
-  // 자녀 카드 렌더링
-  function renderChildren() {
-    const container = document.getElementById('childrenList');
-    container.innerHTML = '';
-
-    globalChildren.forEach((c, index) => {
-      const isDone = (c.status === '🔵 등록 완료');
-      const isCanceled = (c.status === '⚫ 취소/보류');
-      const progOpts = availablePrograms.map(p => `<option value="${p}" ${p===c.program?'selected':''}>${p}</option>`).join('');
-      
-      let badgeClass = isDone ? 'status-badge done-status' : 'status-badge';
-      let badgeText = isDone ? '🔵 등록 완료 (프로그램 및 납부 방식 변경 불가)' : `상태: ${c.status}`;
-
-      const card = `
-        <div class="child-card" id="childCard_${index}">
-          ${(!isDone && !isCanceled) ? `<button class="btn-cancel" onclick="cancelChild(${c.rowIdx}, '${c.name}')">지원 취소</button>` : ''}
-          <div class="${badgeClass}">${badgeText}</div>
-          
-          <div class="readonly-text">${c.name} (${c.engName}) / ${c.gender} / ${c.grade}</div>
-          
-          <div class="grid-2">
-            <div><label>학생 이메일 (수정가능)</label><input type="email" id="cEmail_${index}" value="${c.email}" ${isCanceled?'disabled':''}></div>
-            <div><label>학생 연락처 (수정가능)</label><input type="text" id="cContact_${index}" value="${c.contact}" ${isCanceled?'disabled':''}></div>
-          </div>
-          
-          <div class="grid-2">
-            <div><label>지원 프로그램</label>
-              <select id="cProg_${index}" ${isDone || isCanceled ? 'disabled' : ''}>${progOpts}</select>
-            </div>
-            <div><label>납부 방식</label>
-              <select id="cPay_${index}" ${isDone || isCanceled ? 'disabled' : ''}>
-                <option value="매월 납부 (매월 1일)" ${c.payment.includes('매월')?'selected':''}>매월 납부</option>
-                <option value="1년 일시 납부 (할인 적용)" ${c.payment.includes('1년')?'selected':''}>1년 일시 납부</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      `;
-      container.innerHTML += card;
-    });
-  }
-
-  // [2. 전체 수정 내용 저장]
-  async function updateAll() {
-    if(!confirm("현재 입력된 내용으로 모든 정보를 업데이트 하시겠습니까?")) return;
+  // [2단계] 자녀의 학년과 프로그램에 맞는 Custom Programs 데이터 가져오기
+  async function fetchCourseMap(student) {
+    document.getElementById('loginArea').style.display = 'none';
+    document.getElementById('courseArea').style.display = 'block';
     
-    const btn = document.getElementById('saveBtn');
-    btn.disabled = true; 
-    btn.innerText = "저장 중...";
-
-    const updatedChildren = globalChildren.map((c, index) => {
-      return {
-        rowIdx: c.rowIdx,
-        originalName: c.name,
-        email: document.getElementById(`cEmail_${index}`).value,
-        contact: document.getElementById(`cContact_${index}`).value,
-        program: document.getElementById(`cProg_${index}`).value,
-        payment: document.getElementById(`cPay_${index}`).value
-      };
-    });
-
-    const payload = {
-      action: 'update',
-      updateData: {
-        guardian: {
-          name: document.getElementById('gName').value,
-          contact: document.getElementById('gContact').value,
-          region: document.getElementById('gRegion').value,
-          address: document.getElementById('gAddress').value
-        },
-        children: updatedChildren
-      }
-    };
+    const container = document.getElementById('studentContainer');
+    container.innerHTML = `<p style="text-align:center; color:#64748b;">맵핑된 코스를 분석 중입니다...</p>`;
 
     try {
       const resp = await fetch(SCRIPT_URL, {
-        redirect: "follow",
+        redirect: "follow", // 💡 CORS 방어!
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({ action: 'get_map', program: student.program, grade: student.grade })
       });
-      const res = await resp.json();
-      if(res.result === 'success') {
-        alert("성공적으로 수정되었습니다!");
-        location.reload();
-      } else alert("수정 실패: " + res.message);
-    } catch(e) { 
-      alert("통신 오류가 발생했습니다."); 
-    } finally { 
-      btn.disabled = false; 
-      btn.innerText = "전체 수정 내용 저장하기"; 
-    }
+      const data = await resp.json();
+      
+      if(data.result === 'success' && data.courses.length > 0) {
+        loadedCourses = data.courses;
+        renderCourses(student, loadedCourses);
+      } else {
+        container.innerHTML = `
+          <div class="student-badge">${student.name} (${student.grade})</div>
+          <p style="color:#ef4444; font-size:14px; text-align:center; background:#fee2e2; padding:15px; border-radius:8px;">
+            <b>배정된 세부 코스가 없습니다.</b><br>
+            지원서의 '학년'과 Custom Programs 시트의 'Grade' 형식이 일치하는지 확인해 주세요.
+          </p>`;
+        document.getElementById('submitBtn').style.display = 'none';
+      }
+    } catch(e) { alert("코스 맵핑 로드 오류"); }
   }
 
-  // [3. 개별 자녀 취소]
-  async function cancelChild(rowIdx, childName) {
-    if(!confirm(`[${childName}] 학생의 지원을 취소하시겠습니까?\n취소 시 복구할 수 없습니다.`)) return;
+  // [3단계] 체크박스 렌더링 (기본 체크 상태)
+  function renderCourses(student, courses) {
+    let html = `<div class="student-badge">✅ ${student.name} 학생 (${student.program} / ${student.grade})</div>`;
+    html += `<p style="font-size:13px; color:#475569; margin-bottom:15px;">기본 배정된 과목입니다. 수강하지 않을 과목만 체크를 해제해 주세요.</p>`;
+
+    // Details 카테고리별로 그룹화
+    const grouped = courses.reduce((acc, obj) => {
+      acc[obj.details] = acc[obj.details] || [];
+      acc[obj.details].push(obj);
+      return acc;
+    }, {});
+
+    for (const [detailName, items] of Object.entries(grouped)) {
+      html += `<div class="course-card"><div class="course-header">📘 ${detailName}</div>`;
+      items.forEach((item, idx) => {
+        const itemData = encodeURIComponent(JSON.stringify(item));
+        html += `
+          <div class="checkbox-item">
+            <input type="checkbox" id="chk_${detailName}_${idx}" value="${itemData}" checked>
+            <label for="chk_${detailName}_${idx}">
+              <span style="font-weight:bold;">${item.folder}</span>
+              <span class="file-name">교재: ${item.file}</span>
+            </label>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    }
+    document.getElementById('studentContainer').innerHTML = html;
+  }
+
+  // [4단계] 선택 완료 후 Classroom Roster로 제출
+  async function submitCourses() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+    if(checkboxes.length === 0) return alert("최소 1개 이상의 코스를 선택해야 합니다.");
+
+    if(!confirm(`총 ${checkboxes.length}개의 세부 코스를 확정하시겠습니까?`)) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true; btn.innerText = "서버 전송 중...";
+
+    const selectedCourses = Array.from(checkboxes).map(chk => JSON.parse(decodeURIComponent(chk.value)));
+
     try {
       const resp = await fetch(SCRIPT_URL, {
-        redirect: "follow",
+        redirect: "follow", // 💡 CORS 방어!
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'cancel', rowIdx: rowIdx, childName: childName })
+        body: JSON.stringify({ 
+          action: 'submit_courses', 
+          childName: currentStudent.name,
+          program: currentStudent.program,
+          grade: currentStudent.grade,
+          selectedCourses: selectedCourses
+        })
       });
-      const res = await resp.json();
-      if(res.result === 'success') {
-        alert("지원이 취소되었습니다.");
+      const data = await resp.json();
+      
+      if(data.result === 'success') {
+        alert("세부 코스 배정이 완료되었습니다!\nClassroom Roster 시트에 정상 등록되었습니다.");
         location.reload();
-      } else alert("실패: " + res.message);
-    } catch(e) { 
-      alert("통신 오류가 발생했습니다."); 
-    }
+      } else alert("오류: " + data.message);
+    } catch(e) { alert("제출 중 오류가 발생했습니다."); }
+    finally { btn.disabled = false; btn.innerText = "선택 코스 최종 확정하기"; }
   }
 </script>
 </body>
