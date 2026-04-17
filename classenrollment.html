@@ -70,9 +70,11 @@
 
     try {
       const resp = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'lookup', guardianName: name, guardianContact: contact })
-      });
+  redirect: "follow", // 💡 이 줄을 반드시 추가해 주세요!
+  method: 'POST',
+  headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+  body: JSON.stringify({ action: 'lookup', ... })
+});
       const data = await resp.json();
       
       if(data.result === 'not_found') return alert("일치하는 학생 정보를 찾을 수 없습니다.");
