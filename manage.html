@@ -37,13 +37,13 @@
     <input type="text" id="lookGName" placeholder="예: 홍길동">
     
     <label>보호자 연락처</label>
-    <input type="tel" id="lookGContact" placeholder="예: 010-1234-5678">
+    <input type="tel" id="lookGContact" placeholder="예: 01012345678">
     
     <button class="btn btn-search" id="searchBtn" onclick="lookup()">내역 조회하기</button>
   </div>
 
   <div id="infoArea">
-    <h3> 보호자 정보 (수정 가능)</h3>
+    <h3>보호자 정보 (수정 가능)</h3>
     <div class="grid-2">
       <div><label>보호자 성함</label><input type="text" id="gName"></div>
       <div><label>보호자 연락처</label><input type="text" id="gContact"></div>
@@ -53,7 +53,7 @@
       <div><label>상세 주소</label><input type="text" id="gAddress"></div>
     </div>
 
-    <h3> 자녀 지원 정보</h3>
+    <h3>자녀 지원 정보</h3>
     <div id="childrenList"></div>
 
     <button class="btn btn-update" id="saveBtn" onclick="updateAll()">전체 수정 내용 저장하기</button>
@@ -62,13 +62,12 @@
 </div>
 
 <script>
-  // 💡 [필독] 새 배포 URL을 꼭 넣어주세요!
+  // 💡 아래 따옴표(" ") 사이에 원장님의 새 배포 URL을 넣어주세요! 절대 따옴표를 지우시면 안 됩니다.
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuiX6ZbdjR3UQX8pxdDq-ujEpRByack-H718xEHhWOxaxYtDOgdFOMjamPnx2AmHCYWQ/exec";
   
   let globalChildren = [];
   let availablePrograms = [];
 
-  // [1. 통합 조회]
   async function lookup() {
     const reqName = document.getElementById('lookGName').value;
     const reqContact = document.getElementById('lookGContact').value;
@@ -98,8 +97,122 @@
       document.getElementById('searchArea').style.display = 'none';
       document.getElementById('infoArea').style.display = 'block';
       
-      // 보호자 정보 렌더링
       document.getElementById('gName').value = data.guardian.name;
       document.getElementById('gContact').value = data.guardian.contact;
       document.getElementById('gRegion').value = data.guardian.region;
       document.getElementById('gAddress').value = data.guardian.address;
+
+      renderChildren();
+      
+    } catch(e) { 
+      alert("통신 오류가 발생했습니다. SCRIPT_URL을 확인해 주세요."); 
+      console.error(e);
+    } finally { 
+      btn.innerText = "내역 조회하기"; btn.disabled = false; 
+    }
+  }
+
+  function renderChildren() {
+    const container = document.getElementById('childrenList');
+    container.innerHTML = '';
+
+    globalChildren.forEach((c, index) => {
+      const isDone = (c.status === '🔵 등록 완료');
+      const isCanceled = (c.status === '⚫ 취소/보류');
+      const progOpts = availablePrograms.map(p => `<option value="${p}" ${p===c.program?'selected':''}>${p}</option>`).join('');
+      
+      let badgeClass = isDone ? 'status-badge done-status' : 'status-badge';
+      let badgeText = isDone ? '🔵 등록 완료 (프로그램 변경 불가)' : `상태: ${c.status}`;
+
+      const card = `
+        <div class="child-card" id="childCard_${index}">
+          ${(!isDone && !isCanceled) ? `<button class="btn-cancel" onclick="cancelChild(${c.rowIdx}, '${c.name}')">지원 취소</button>` : ''}
+          <div class="${badgeClass}">${badgeText}</div>
+          
+          <div class="readonly-text">${c.name} (${c.engName}) / ${c.gender} / ${c.grade}</div>
+          
+          <div class="grid-2">
+            <div><label>학생 이메일 (수정가능)</label><input type="email" id="cEmail_${index}" value="${c.email}" ${isCanceled?'disabled':''}></div>
+            <div><label>학생 연락처 (수정가능)</label><input type="text" id="cContact_${index}" value="${c.contact}" ${isCanceled?'disabled':''}></div>
+          </div>
+          
+          <div class="grid-2">
+            <div><label>지원 프로그램</label>
+              <select id="cProg_${index}" ${isDone || isCanceled ? 'disabled' : ''}>${progOpts}</select>
+            </div>
+            <div><label>납부 방식</label>
+              <select id="cPay_${index}" ${isCanceled?'disabled':''}>
+                <option value="매월 납부 (매월 1일)" ${c.payment.includes('매월')?'selected':''}>매월 납부</option>
+                <option value="1년 일시 납부 (할인 적용)" ${c.payment.includes('1년')?'selected':''}>1년 일시 납부</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      `;
+      container.innerHTML += card;
+    });
+  }
+
+  async function updateAll() {
+    if(!confirm("현재 입력된 내용으로 모든 정보를 업데이트 하시겠습니까?")) return;
+    
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true; btn.innerText = "저장 중...";
+
+    const updatedChildren = globalChildren.map((c, index) => {
+      return {
+        rowIdx: c.rowIdx,
+        originalName: c.name,
+        email: document.getElementById(`cEmail_${index}`).value,
+        contact: document.getElementById(`cContact_${index}`).value,
+        program: document.getElementById(`cProg_${index}`).value,
+        payment: document.getElementById(`cPay_${index}`).value
+      };
+    });
+
+    const payload = {
+      action: 'update',
+      updateData: {
+        guardian: {
+          name: document.getElementById('gName').value,
+          contact: document.getElementById('gContact').value,
+          region: document.getElementById('gRegion').value,
+          address: document.getElementById('gAddress').value
+        },
+        children: updatedChildren
+      }
+    };
+
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload)
+      });
+      const res = await resp.json();
+      if(res.result === 'success') {
+        alert("성공적으로 수정되었습니다!");
+        location.reload();
+      } else alert("수정 실패: " + res.message);
+    } catch(e) { alert("통신 오류"); }
+    finally { btn.disabled = false; btn.innerText = "전체 수정 내용 저장하기"; }
+  }
+
+  async function cancelChild(rowIdx, childName) {
+    if(!confirm(`[${childName}] 학생의 지원을 취소하시겠습니까?\n취소 시 복구할 수 없습니다.`)) return;
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'cancel', rowIdx: rowIdx, childName: childName })
+      });
+      const res = await resp.json();
+      if(res.result === 'success') {
+        alert("지원이 취소되었습니다.");
+        location.reload();
+      } else alert("실패: " + res.message);
+    } catch(e) { alert("통신 오류"); }
+  }
+</script>
+</body>
+</html>
