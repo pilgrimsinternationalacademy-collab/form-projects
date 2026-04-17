@@ -121,6 +121,51 @@
     finally { document.getElementById('searchBtn').innerText = "내역 조회하기"; }
   }
 
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'lookup', childName: curName, studentEmail: curEmail })
+      });
+      const data = await resp.json();
+      
+      if(data.result === 'not_found') return alert("정보를 찾을 수 없습니다.");
+
+      document.getElementById('searchArea').style.display = 'none';
+      document.getElementById('infoArea').style.display = 'block';
+      
+      const statusDiv = document.getElementById('status');
+      statusDiv.innerText = `현재 진행 상태: ${data.status}`;
+      document.getElementById('editContact').value = data.student.contact;
+
+      // 프로그램 목록 세팅
+      const sel = document.getElementById('editProg');
+      sel.innerHTML = data.programs.map(p => `<option value="${p}">${p}</option>`).join('');
+      sel.value = data.student.program;
+
+      // [💡 새로운 규칙 적용]
+      if(data.status === '🔵 등록 완료') {
+        // 등록 완료되어도 다른 정보는 수정 가능하게 함
+        document.getElementById('editContact').disabled = false; 
+        document.getElementById('editProg').disabled = true; // 🚨 프로그램만 수정 불가
+        
+        document.getElementById('saveBtn').style.display = 'block'; // 저장 버튼은 계속 보여줌
+        document.getElementById('cancelBtn').style.display = 'none';  // 취소는 여전히 차단
+        
+        statusDiv.style.background = '#dbeafe';
+        statusDiv.style.color = '#1e40af';
+        statusDiv.innerText += "\n(프로그램을 제외한 연락처 등은 수정 가능합니다)";
+      } else {
+        // 등록 완료가 아닐 때는 모두 자유롭게 수정/취소 가능
+        document.getElementById('editContact').disabled = false;
+        document.getElementById('editProg').disabled = false;
+        document.getElementById('saveBtn').style.display = 'block';
+        document.getElementById('cancelBtn').style.display = 'block';
+      }
+      
+    } catch(e) { alert("연결 오류"); }
+  }
+
   // 2. 자녀 리스트 그리기
   function renderList() {
     document.getElementById('searchArea').style.display = 'none';
@@ -225,6 +270,7 @@
       else alert("오류: " + res.message);
     } catch(e) { alert("통신 오류가 발생했습니다."); }
   }
+  
 </script>
 </body>
 </html>
