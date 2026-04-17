@@ -179,7 +179,7 @@
         alert("세부 코스 신청이 완료되었습니다!\nClassroom Roster에 정상 배정되었습니다.");
         location.reload();
       } else alert("오류: " + data.message);
-    } catch(e) { alert("제출 중 오류가 발생했습니다."); }
+    } catch(e) { alert("코스 맵핑 로드 오류: " + e.message); console.error(e); }
     finally { btn.disabled = false; btn.innerText = "선택 코스 최종 제출하기"; }
   }
 </script>
