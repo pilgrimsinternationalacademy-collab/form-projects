@@ -10,7 +10,7 @@
     h2 { text-align: center; color: #0f172a; margin-top: 0; }
     h3 { font-size: 16px; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; color: #1e293b; margin-top: 25px; }
     input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
-    input:disabled, select:disabled { background: #f1f5f9; cursor: not-allowed; color: #64748b; }
+    input:disabled, select:disabled { background: #f1f5f9; cursor: not-allowed; color: #64748b; opacity: 0.8; }
     label { font-size: 12px; font-weight: bold; color: #1e40af; display: block; margin-bottom: 4px; }
     
     .btn { width: 100%; padding: 15px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; font-size: 15px; margin-bottom: 10px;}
@@ -62,7 +62,7 @@
 </div>
 
 <script>
-  // 💡 아래 따옴표(" ") 사이에 원장님의 새 배포 URL을 넣어주세요! 절대 따옴표를 지우시면 안 됩니다.
+  // 💡 아래 따옴표(" ") 사이에 원장님의 새 배포 URL을 넣어주세요!
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuiX6ZbdjR3UQX8pxdDq-ujEpRByack-H718xEHhWOxaxYtDOgdFOMjamPnx2AmHCYWQ/exec";
   
   let globalChildren = [];
@@ -106,7 +106,6 @@
       
     } catch(e) { 
       alert("통신 오류가 발생했습니다. SCRIPT_URL을 확인해 주세요."); 
-      console.error(e);
     } finally { 
       btn.innerText = "내역 조회하기"; btn.disabled = false; 
     }
@@ -122,8 +121,9 @@
       const progOpts = availablePrograms.map(p => `<option value="${p}" ${p===c.program?'selected':''}>${p}</option>`).join('');
       
       let badgeClass = isDone ? 'status-badge done-status' : 'status-badge';
-      let badgeText = isDone ? '🔵 등록 완료 (프로그램 변경 불가)' : `상태: ${c.status}`;
+      let badgeText = isDone ? '🔵 등록 완료 (프로그램 및 납부 방식 변경 불가)' : `상태: ${c.status}`;
 
+      // 💡 핵심: isDone(등록완료) 이면 납부방식(cPay)도 disabled 처리
       const card = `
         <div class="child-card" id="childCard_${index}">
           ${(!isDone && !isCanceled) ? `<button class="btn-cancel" onclick="cancelChild(${c.rowIdx}, '${c.name}')">지원 취소</button>` : ''}
@@ -141,7 +141,7 @@
               <select id="cProg_${index}" ${isDone || isCanceled ? 'disabled' : ''}>${progOpts}</select>
             </div>
             <div><label>납부 방식</label>
-              <select id="cPay_${index}" ${isCanceled?'disabled':''}>
+              <select id="cPay_${index}" ${isDone || isCanceled ? 'disabled' : ''}>
                 <option value="매월 납부 (매월 1일)" ${c.payment.includes('매월')?'selected':''}>매월 납부</option>
                 <option value="1년 일시 납부 (할인 적용)" ${c.payment.includes('1년')?'selected':''}>1년 일시 납부</option>
               </select>
