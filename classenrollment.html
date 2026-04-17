@@ -71,7 +71,6 @@
     try {
       const resp = await fetch(SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'lookup', guardianName: name, guardianContact: contact })
       });
       const data = await resp.json();
