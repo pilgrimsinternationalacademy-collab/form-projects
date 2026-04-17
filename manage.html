@@ -2,217 +2,192 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>필그림스 학부모 대시보드</title>
+  <title>필그림스 지원 정보 조회 및 수정</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body { font-family: 'Malgun Gothic', sans-serif; background: #f1f5f9; padding: 20px; color: #334155; }
-    .card { max-width: 550px; margin: 30px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 6px solid #2563eb; }
-    h2 { text-align: center; color: #0f172a; margin-top: 0; }
-    .subtitle { text-align: center; color: #64748b; font-size: 14px; margin-bottom: 25px; }
-    
-    input, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
-    label { font-size: 13px; font-weight: bold; color: #1e40af; display: block; margin-bottom: 5px; }
-    
-    .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; margin-bottom: 10px; font-size: 14px; }
-    .btn:disabled { background: #94a3b8 !important; cursor: not-allowed; }
-    .btn-search { background: #0f172a; }
-    .btn-update { background: #2563eb; }
-    .btn-cancel { background: #ef4444; }
-
-    /* 자녀별 카드 스타일 */
-    .child-box { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 25px; background: #fafafa; }
-    .child-header { font-size: 18px; font-weight: bold; color: #0f172a; margin-bottom: 10px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-    .status-badge { display: inline-block; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; margin-bottom: 15px; background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
-    .status-done { background: #dbeafe; color: #1e40af; border-color: #bfdbfe; }
-    .status-cancel { background: #f1f5f9; color: #64748b; border-color: #cbd5e1; }
-    
-    #infoArea { display: none; margin-top: 20px; }
-    .guardian-info { background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #e2e8f0; font-size: 14px; }
+    body { font-family: 'Malgun Gothic', sans-serif; background: #f1f5f9; padding: 20px; color: #334155; line-height: 1.6; }
+    .container { max-width: 500px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 12px; border-top: 8px solid #0f172a; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    h2 { text-align: center; color: #0f172a; margin-bottom: 25px; }
+    .input-group { margin-bottom: 15px; }
+    label { display: block; font-size: 13px; font-weight: bold; margin-bottom: 5px; color: #475569; }
+    input, select { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+    .btn { width: 100%; padding: 15px; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+    .btn-primary { background: #0f172a; color: #fff; }
+    .btn-update { background: #2563eb; color: #fff; }
+    .btn-cancel { background: #ef4444; color: #fff; }
+    .status-banner { padding: 10px; border-radius: 6px; text-align: center; font-weight: bold; margin-bottom: 20px; font-size: 14px; }
+    #editArea { display: none; margin-top: 20px; border-top: 1px dashed #cbd5e1; padding-top: 20px; }
+    .child-selector { background: #f8fafc; padding: 10px; border-radius: 6px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <h2>보호자 지원 내역 조회</h2>
-  <p class="subtitle" id="subText">지원서 작성 시 입력한 보호자 정보를 입력해주세요.</p>
+<div class="container">
+  <h2>지원 정보 관리</h2>
   
-  <div id="searchArea">
-    <label>보호자 성함</label>
-    <input type="text" id="gName" placeholder="보호자 이름 입력">
-    
-    <label>보호자 연락처</label>
-    <input type="tel" id="gContact" placeholder="010-0000-0000">
-    
-    <button class="btn btn-search" id="searchBtn" onclick="lookup()">내역 조회하기</button>
+  <div id="loginArea">
+    <div class="input-group">
+      <label>보호자 성함</label>
+      <input type="text" id="guardianName" placeholder="성함을 입력하세요">
+    </div>
+    <div class="input-group">
+      <label>보호자 연락처</label>
+      <input type="tel" id="guardianContact" placeholder="010-0000-0000">
+    </div>
+    <button class="btn btn-primary" id="loginBtn" onclick="lookup()">내역 조회하기</button>
   </div>
 
-  <div id="infoArea">
-    <div class="guardian-info" id="guardInfoBox"></div>
+  <div id="editArea">
+    <div id="statusBanner" class="status-banner"></div>
     
-    <h3 style="color: #0f172a; margin-top: 30px;">자녀 지원 관리</h3>
-    <div id="childrenList"></div>
-    
-    <button class="btn" style="background: #64748b; margin-top: 20px;" onclick="location.reload()">로그아웃 (처음으로)</button>
+    <div class="child-selector" id="multiChildArea" style="display:none;">
+      <label>수정할 자녀 선택</label>
+      <select id="childSelect" onchange="displayChildInfo(this.value)"></select>
+    </div>
+
+    <div class="input-group">
+      <label>자녀 이름 (수정 가능)</label>
+      <input type="text" id="editChildName">
+    </div>
+    <div class="input-group">
+      <label>지원 프로그램 (등록 완료 시 고정)</label>
+      <select id="editProgram"></select>
+    </div>
+    <div class="input-group">
+      <label>자녀 연락처 (수정 가능)</label>
+      <input type="text" id="editStudentContact">
+    </div>
+    <div class="input-group">
+      <label>보호자 연락처 (수정 가능)</label>
+      <input type="text" id="editGuardianContact">
+    </div>
+    <div class="input-group">
+      <label>자택 주소 (수정 가능)</label>
+      <input type="text" id="editAddress">
+    </div>
+
+    <div id="actionBtns">
+      <button class="btn btn-update" onclick="update()">변경 사항 저장</button>
+      <button class="btn btn-cancel" id="cancelBtn" onclick="cancel()">지원 취소하기</button>
+    </div>
+    <button class="btn" style="background:#e2e8f0; color:#475569;" onclick="location.reload()">로그아웃</button>
   </div>
 </div>
 
 <script>
-  // 💡 [매우 중요] '새 배포' 후 복사한 URL을 여기에 반드시 붙여넣으세요!
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuiX6ZbdjR3UQX8pxdDq-ujEpRByack-H718xEHhWOxaxYtDOgdFOMjamPnx2AmHCYWQ/exec";
-  
-  let currentGuardianName = "";
-  let currentGuardianContact = "";
-  let globalPrograms = [];
+  let searchResults = [];
+  let currentRowIdx = -1;
 
-  // [기능 1] 보호자 정보로 통합 조회
   async function lookup() {
-    currentGuardianName = document.getElementById('gName').value.trim();
-    currentGuardianContact = document.getElementById('gContact').value.trim();
-    
-    if(!currentGuardianName || !currentGuardianContact) return alert("보호자 이름과 연락처를 모두 입력해주세요.");
+    const name = document.getElementById('guardianName').value;
+    const contact = document.getElementById('guardianContact').value;
+    if(!name || !contact) return alert("보호자 정보를 입력해주세요.");
 
-    const btn = document.getElementById('searchBtn');
-    btn.innerText = "조회 중입니다..."; btn.disabled = true;
+    const btn = document.getElementById('loginBtn');
+    btn.disabled = true; btn.innerText = "조회 중...";
 
     try {
       const resp = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'lookup', guardianName: currentGuardianName, guardianContact: currentGuardianContact })
+        body: JSON.stringify({ action: 'lookup', guardianName: name, guardianContact: contact })
       });
-      
-      const data = await resp.json();
-      
-      if(data.result === 'not_found') {
-        alert("일치하는 지원 내역이 없습니다.\n입력하신 보호자 이름과 연락처를 다시 확인해 주세요.");
-        return;
+      const res = await resp.json();
+
+      if(res.result === 'not_found') {
+        alert("일치하는 지원 내역이 없습니다.");
+      } else {
+        searchResults = res.data;
+        document.getElementById('loginArea').style.display = 'none';
+        document.getElementById('editArea').style.display = 'block';
+        
+        // 프로그램 목록 세팅
+        const progSel = document.getElementById('editProgram');
+        progSel.innerHTML = res.programs.map(p => `<option value="${p}">${p}</option>`).join('');
+
+        // 자녀가 여러 명일 경우 선택창 표시
+        if(searchResults.length > 1) {
+          const cSel = document.getElementById('childSelect');
+          cSel.innerHTML = searchResults.map((c, i) => `<option value="${i}">${c.childName} 학생</option>`).join('');
+          document.getElementById('multiChildArea').style.display = 'block';
+        }
+        
+        displayChildInfo(0);
       }
+    } catch(e) { alert("서버 통신 오류가 발생했습니다."); }
+    finally { btn.disabled = false; btn.innerText = "내역 조회하기"; }
+  }
 
-      globalPrograms = data.programs || [];
-      
-      // 화면 전환
-      document.getElementById('searchArea').style.display = 'none';
-      document.getElementById('subText').style.display = 'none';
-      document.getElementById('infoArea').style.display = 'block';
-      
-      // 보호자 기본 정보 표시
-      document.getElementById('guardInfoBox').innerHTML = `
-        <strong>[보호자 정보]</strong><br>
-        이름: ${data.guardian.name} <br>
-        연락처: ${data.guardian.contact} <br>
-        주소: ${data.guardian.address}
-      `;
+  function displayChildInfo(index) {
+    const child = searchResults[index];
+    currentRowIdx = child.rowIdx;
+    
+    document.getElementById('editChildName').value = child.childName;
+    document.getElementById('editProgram').value = child.program;
+    document.getElementById('editStudentContact').value = child.studentContact;
+    document.getElementById('editGuardianContact').value = child.guardianContact;
+    document.getElementById('editAddress').value = child.address;
 
-      // 자녀 목록 렌더링
-      renderChildren(data.children);
-      
-    } catch(e) {
-      alert("조회 실패! 서버 연결에 문제가 있습니다.");
-    } finally {
-      btn.innerText = "내역 조회하기"; btn.disabled = false;
+    const banner = document.getElementById('statusBanner');
+    banner.innerText = `현재 상태: ${child.status}`;
+
+    // 🚨 등록 완료 규칙 적용
+    if(child.status === '🔵 등록 완료') {
+      document.getElementById('editProgram').disabled = true;
+      document.getElementById('cancelBtn').style.display = 'none';
+      banner.style.background = '#dbeafe';
+      banner.style.color = '#1e40af';
+      banner.innerText += " (프로그램은 수정이 불가능합니다)";
+    } else {
+      document.getElementById('editProgram').disabled = false;
+      document.getElementById('cancelBtn').style.display = 'block';
+      banner.style.background = '#fef9c3';
+      banner.style.color = '#854d0e';
     }
   }
 
-  // 화면에 자녀 박스 그리기
-  function renderChildren(children) {
-    const listDiv = document.getElementById('childrenList');
-    listDiv.innerHTML = '';
-
-    children.forEach((child, index) => {
-      const isDone = child.status === '🔵 등록 완료';
-      const isCanceled = child.status === '⚫ 취소/보류';
-      
-      // 상태 뱃지 스타일링
-      let badgeClass = 'status-badge';
-      let badgeText = `진행 상태: ${child.status}`;
-      if(isDone) { badgeClass += ' status-done'; badgeText += ' (프로그램/취소 변경 불가)'; }
-      if(isCanceled) { badgeClass += ' status-cancel'; badgeText = '지원 취소됨'; }
-
-      // 프로그램 옵션 만들기
-      const progOptions = globalPrograms.map(p => 
-        `<option value="${p}" ${child.program === p ? 'selected' : ''}>${p}</option>`
-      ).join('');
-
-      const childHtml = `
-        <div class="child-box">
-          <div class="child-header">${child.name} <span style="font-size:13px; color:#64748b;">(${child.engName}) / ${child.grade}</span></div>
-          <div class="${badgeClass}">${badgeText}</div>
-          
-          <label>자녀 연락처</label>
-          <input type="text" id="contact-${index}" value="${child.contact}" ${isCanceled ? 'disabled' : ''}>
-          
-          <label>지원 프로그램</label>
-          <select id="program-${index}" ${(isDone || isCanceled) ? 'disabled' : ''}>
-            ${progOptions}
-          </select>
-          
-          <label>납부 방식</label>
-          <select id="payment-${index}" ${isCanceled ? 'disabled' : ''}>
-            <option value="매월 납부 (매월 1일)" ${child.payment.includes('매월') ? 'selected' : ''}>매월 납부</option>
-            <option value="1년 일시 납부 (할인 적용)" ${child.payment.includes('일시') ? 'selected' : ''}>1년 일시 납부</option>
-          </select>
-
-          ${!isCanceled ? `
-            <div style="margin-top: 15px; display:flex; gap:10px;">
-              <button class="btn btn-update" style="margin:0;" onclick="updateChild('${child.name}', ${index})">저장</button>
-              ${!isDone ? `<button class="btn btn-cancel" style="margin:0;" onclick="cancelChild('${child.name}')">취소</button>` : ''}
-            </div>
-          ` : ''}
-        </div>
-      `;
-      listDiv.insertAdjacentHTML('beforeend', childHtml);
-    });
-  }
-
-  // [기능 2] 자녀 개별 정보 수정
-  async function updateChild(childName, index) {
-    if(!confirm(`[${childName}] 학생의 정보를 수정하시겠습니까?`)) return;
+  async function update() {
+    if(!confirm("정보를 수정하시겠습니까?")) return;
     
-    const uContact = document.getElementById(`contact-${index}`).value;
-    const uProgram = document.getElementById(`program-${index}`).value;
-    const uPayment = document.getElementById(`payment-${index}`).value;
+    const updateData = {
+      childName: document.getElementById('editChildName').value,
+      program: document.getElementById('editProgram').value,
+      studentContact: document.getElementById('editStudentContact').value,
+      guardianName: document.getElementById('guardianName').value,
+      guardianContact: document.getElementById('editGuardianContact').value,
+      region: searchResults[0].region, // 기존 데이터 유지
+      address: document.getElementById('editAddress').value,
+      studentEmail: searchResults[0].studentEmail, // 고정
+      payment: searchResults[0].payment // 고정
+    };
 
     try {
       const resp = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ 
-          action: 'update', 
-          guardianName: currentGuardianName, 
-          guardianContact: currentGuardianContact,
-          childName: childName,
-          updateData: { contact: uContact, program: uProgram, payment: uPayment }
-        })
+        body: JSON.stringify({ action: 'update', rowIdx: currentRowIdx, updateData: updateData })
       });
       const res = await resp.json();
-      if(res.result === 'success') alert(`[${childName}] 학생의 정보가 정상적으로 수정되었습니다.`);
-      else alert("수정 실패: " + res.message);
-    } catch(e) { alert("통신 오류"); }
+      if(res.result === 'success') alert("성공적으로 수정되었습니다.");
+      else alert(res.message);
+    } catch(e) { alert("수정 중 오류가 발생했습니다."); }
   }
 
-  // [기능 3] 자녀 개별 지원 취소
-  async function cancelChild(childName) {
-    if(!confirm(`정말 [${childName}] 학생의 지원을 취소하시겠습니까?\n이 작업은 되돌릴 수 없습니다.`)) return;
-    
+  async function cancel() {
+    if(!confirm("정말 지원을 취소하시겠습니까?")) return;
     try {
       const resp = await fetch(SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ 
-          action: 'cancel', 
-          guardianName: currentGuardianName, 
-          guardianContact: currentGuardianContact,
-          childName: childName
-        })
+        body: JSON.stringify({ action: 'cancel', rowIdx: currentRowIdx })
       });
       const res = await resp.json();
       if(res.result === 'success') {
-        alert(`[${childName}] 학생의 지원이 취소되었습니다.`);
-        // 취소 성공 시 해당 보호자 정보로 화면 재조회(새로고침 효과)
-        lookup();
-      }
-      else alert("취소 실패: " + res.message);
-    } catch(e) { alert("통신 오류"); }
+        alert("지원이 취소되었습니다.");
+        location.reload();
+      } else alert(res.message);
+    } catch(e) { alert("취소 중 오류가 발생했습니다."); }
   }
 </script>
 </body>
