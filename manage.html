@@ -102,6 +102,7 @@
       document.getElementById('gContact').value = data.guardian.contact;
       document.getElementById('gRegion').value = data.guardian.region;
       document.getElementById('gAddress').value = data.guardian.address;
+      document.getElementById('gEmail').value = data.guardian.email || '';
 
       renderChildren();
       
@@ -178,7 +179,8 @@
           name: document.getElementById('gName').value,
           contact: document.getElementById('gContact').value,
           region: document.getElementById('gRegion').value,
-          address: document.getElementById('gAddress').value
+          address: document.getElementById('gAddress').value,
+          email: document.getElementById('gEmail').value
         },
         children: updatedChildren
       }
