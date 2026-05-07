@@ -24,46 +24,105 @@
 <body>
 
 <div class="container">
-  <div style="text-align: right; margin-bottom: 10px;"><a href="index_en.html" style="text-decoration: none; color: #2563eb; font-weight: bold; font-size: 14px;">🇺🇸 English Version</a></div>
+  <div style="text-align: right; margin-bottom: 10px;">
+    <a href="manage.html" style="text-decoration: none; font-size: 13px; font-weight: bold; color: #2563eb;">🔍 지원 정보 조회/수정</a>
+  </div>
   <h1 id="ui-title">필그림스 아카데미 지원서</h1>
   
   <div class="header-box">
-    <h2 id="ui-welcome-h2" style="margin-top:0; font-size:18px;">Welcome</h2>
     <p id="ui-welcome-msg">정보를 불러오는 중입니다...</p>
     <div id="ui-prices" style="margin: 15px 0;"></div>
-    <div id="ui-contact" style="border-top: 1px dashed #cbd5e1; pt: 15px; font-weight: bold;"></div>
+    <div id="ui-contact" style="border-top: 1px dashed #cbd5e1; padding-top: 15px; font-weight: bold;"></div>
   </div>
 
   <form id="academyForm">
-    <!-- [중략] 기존 스타일 유지 -->
+    <div class="section">
+      <h3>1. 보호자 정보</h3>
+      <div class="grid">
+        <div><label>보호자 성함 *</label><input type="text" id="guardianName" required></div>
+        <div><label>보호자 연락처 *</label><input type="tel" id="guardianContact" placeholder="010-0000-0000" required></div>
+      </div>
+      <div class="grid">
+        <div><label>보호자 이메일 *</label><input type="email" id="guardianEmail" placeholder="example@gmail.com" required></div>
+        <div><label>주거 지역 *</label><input type="text" id="region" placeholder="예: 서울시 강남구" required></div>
+      </div>
+      <div class="grid">
+        <div style="grid-column: span 2;"><label>상세 주소 (교재 배송용) *</label><input type="text" id="address" required></div>
+      </div>
+    </div>
 
-<div class="section">
-  <h3>1. 보호자 정보</h3>
-  <div class="grid">
-    <div><label>보호자 성함 *</label><input type="text" id="guardianName" required></div>
-    <div><label>보호자 연락처 *</label><input type="tel" id="guardianContact" placeholder="010-0000-0000" required></div>
-  </div>
-  <!-- 💡 보호자 이메일 필드 추가 -->
-  <div class="grid">
-    <div><label>보호자 이메일 *</label><input type="email" id="guardianEmail" placeholder="example@gmail.com" required></div>
-    <div><label>주거 지역 *</label><input type="text" id="region" placeholder="예: 서울시 강남구" required></div>
-  </div>
-  <div class="grid">
-    <div style="grid-column: span 2;"><label>상세 주소 (배송용) *</label><input type="text" id="address" required></div>
-  </div>
+    <div class="section">
+      <h3>2. 자녀 지원 정보 <button type="button" class="add-btn" onclick="addChild()">+ 자녀 추가</button></h3>
+      <div id="childrenContainer"></div>
+    </div>
+    <button type="submit" id="submitBtn" class="submit-btn">지원서 최종 제출하기</button>
+  </form>
 </div>
 
-<!-- [중략] 자녀 정보 섹션 유지 -->
-
 <script>
-  // [중략] 기존 loadConfig, addChild 함수 유지
+  // 💡 [매우 중요] 새 배포 URL을 넣어주세요!
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxestS3ovQRlMS8FGShc7ilfunaVtIyg0are77RqHJG7IFPp2DLOQ6J1B7RIvM3pCBpqw/exec";
+  let childCount = 0;
+  let programs = [];
+
+  // 시트에서 폼설정 값 가져오기
+  async function loadConfig() {
+    try {
+      const resp = await fetch(`${SCRIPT_URL}?type=config`, { redirect: "follow" });
+      const config = await resp.json();
+      programs = config.programs;
+      
+      document.getElementById('ui-welcome-msg').innerText = config.general.welcome_msg.ko;
+      document.getElementById('ui-contact').innerText = `문의: ${config.general.contact_email.ko} / ${config.general.contact_phone.ko}`;
+      
+      let priceHtml = "<strong>[등록 가능 프로그램 안내]</strong><br>";
+      programs.forEach(p => { priceHtml += `• ${p.ko}<br>`; });
+      document.getElementById('ui-prices').innerHTML = priceHtml;
+      
+      addChild(); // 첫 자녀 폼 생성
+    } catch (e) { console.error(e); alert("설정 정보를 불러오지 못했습니다."); }
+  }
+
+  function addChild() {
+    if (childCount >= 5) return alert("자녀는 한 번에 최대 5명까지 등록 가능합니다.");
+    childCount++;
+    const id = Date.now();
+    const progOptions = programs.map(p => `<option value="${p.ko}">${p.ko}</option>`).join('');
+    
+    const html = `
+      <div class="child-card" id="child-${id}">
+        ${childCount > 1 ? `<button type="button" class="remove-btn" onclick="document.getElementById('child-${id}').remove(); childCount--;">삭제 ✕</button>` : ''}
+        <div class="grid">
+          <div><label>자녀 성함 *</label><input type="text" class="c-name" required></div>
+          <div><label>영문 이름 (여권동일) *</label><input type="text" class="c-engName" required></div>
+        </div>
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr;">
+          <div><label>성별 *</label><select class="c-gender"><option value="남">남</option><option value="여">여</option></select></div>
+          <div><label>생년월일 *</label><input type="date" class="c-dob" required></div>
+          <div><label>학년 *</label><input type="text" class="c-grade" placeholder="예: Grade 1" required></div>
+        </div>
+        <div class="grid">
+          <div><label>학생 구글 이메일 *</label><input type="email" class="c-studentEmail" required></div>
+          <div><label>자녀 연락처 (없으면 '없음')</label><input type="text" class="c-contact" required></div>
+        </div>
+        <div class="grid" style="background:#f1f5f9; padding:15px; border-radius:6px; margin-top:10px;">
+          <div><label>지원 프로그램 *</label><select class="c-program">${progOptions}</select></div>
+          <div><label>납부 방식 *</label><select class="c-paymentMethod">
+            <option value="매월 납부 (매월 1일)">매월 납부 (매월 1일)</option>
+            <option value="1년 일시 납부 (할인 적용)">1년 일시 납부 (할인 적용)</option>
+          </select></div>
+        </div>
+      </div>`;
+    document.getElementById('childrenContainer').insertAdjacentHTML('beforeend', html);
+  }
+
+  window.onload = loadConfig;
 
   document.getElementById('academyForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
-    btn.disabled = true; btn.innerText = "제출 중...";
+    btn.disabled = true; btn.innerText = "제출 중입니다...";
     
-    // 자녀 데이터 수집
     const children = Array.from(document.querySelectorAll('.child-card')).map(card => ({
       name: card.querySelector('.c-name').value,
       engName: card.querySelector('.c-engName').value,
@@ -76,25 +135,29 @@
       paymentMethod: card.querySelector('.c-paymentMethod').value
     }));
 
-    // 💡 전송 데이터에 guardianEmail 추가
     const payload = { 
       action: 'submit',
       formType: "한국어 폼", 
       guardianName: document.getElementById('guardianName').value, 
       guardianContact: document.getElementById('guardianContact').value, 
-      guardianEmail: document.getElementById('guardianEmail').value, // 추가됨
+      guardianEmail: document.getElementById('guardianEmail').value,
       region: document.getElementById('region').value, 
       address: document.getElementById('address').value, 
-      children 
+      children: children 
     };
 
     try {
-      const resp = await fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
+      const resp = await fetch(SCRIPT_URL, { 
+        redirect: "follow", 
+        method: 'POST', 
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload) 
+      });
       const res = await resp.json();
-      if (res.result === 'duplicate') alert(`이미 [${res.studentName}] 학생의 신청서가 접수되어 있습니다.`);
-      else { alert("정상적으로 접수되었습니다!"); location.reload(); }
-    } catch (err) { alert("오류가 발생했습니다. 다시 시도해 주세요."); }
-    finally { btn.disabled = false; btn.innerText = "지원서 제출하기"; }
+      if (res.result === 'duplicate') alert(`이미 [${res.studentName}] 학생의 이름으로 된 신청서가 존재합니다.`);
+      else { alert("지원서가 정상적으로 접수되었습니다!"); location.reload(); }
+    } catch (err) { alert("통신 오류가 발생했습니다. SCRIPT_URL을 확인해주세요."); console.error(err); }
+    finally { btn.disabled = false; btn.innerText = "지원서 최종 제출하기"; }
   });
 </script>
 </body>
