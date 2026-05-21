@@ -29,6 +29,9 @@
 <body>
 
 <div class="container">
+  <div style="text-align: right; margin-bottom: 10px;">
+    <a href="index.html" style="text-decoration: none; font-size: 13px; font-weight: bold; color: #10b981;">신규 지원서 작성</a>
+  </div>
   <h2>지원 정보 통합 관리</h2>
   
   <div id="searchArea">
@@ -47,12 +50,12 @@
     <div class="grid-2">
       <div><label>보호자 성함</label><input type="text" id="gName"></div>
       <div><label>보호자 연락처</label><input type="text" id="gContact"></div>
-      <div><label>보호자 이메일</label><input type="email" id="gEmail"></div>
     </div>
     <div class="grid-2">
+      <div><label>보호자 이메일</label><input type="email" id="gEmail"></div>
       <div><label>거주 지역</label><input type="text" id="gRegion"></div>
-      <div><label>상세 주소</label><input type="text" id="gAddress"></div>
     </div>
+    <div><label>상세 주소</label><input type="text" id="gAddress"></div>
 
     <h3>자녀 지원 정보</h3>
     <div id="childrenList"></div>
@@ -63,12 +66,13 @@
 </div>
 
 <script>
-  // 💡 아래 따옴표(" ") 사이에 원장님의 새 배포 URL을 넣어주세요!
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuiX6ZbdjR3UQX8pxdDq-ujEpRByack-H718xEHhWOxaxYtDOgdFOMjamPnx2AmHCYWQ/exec";
+  // 💡 새 배포 URL을 여기에 정확히 넣어주세요!
+  const SCRIPT_URL = "여기에_원장님의_배포_URL을_넣으세요";
   
   let globalChildren = [];
   let availablePrograms = [];
 
+  // [1. 내역 조회 기능]
   async function lookup() {
     const reqName = document.getElementById('lookGName').value;
     const reqContact = document.getElementById('lookGContact').value;
@@ -80,6 +84,7 @@
 
     try {
       const resp = await fetch(SCRIPT_URL, {
+        redirect: "follow", 
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'lookup', guardianName: reqName, guardianContact: reqContact })
@@ -107,12 +112,13 @@
       renderChildren();
       
     } catch(e) { 
-      alert("통신 오류가 발생했습니다. SCRIPT_URL을 확인해 주세요."); 
+      alert("통신 오류가 발생했습니다. SCRIPT_URL 또는 배포 권한을 확인해 주세요."); 
     } finally { 
       btn.innerText = "내역 조회하기"; btn.disabled = false; 
     }
   }
 
+  // [2. 자녀 리스트 카드 생성]
   function renderChildren() {
     const container = document.getElementById('childrenList');
     container.innerHTML = '';
@@ -123,9 +129,8 @@
       const progOpts = availablePrograms.map(p => `<option value="${p}" ${p===c.program?'selected':''}>${p}</option>`).join('');
       
       let badgeClass = isDone ? 'status-badge done-status' : 'status-badge';
-      let badgeText = isDone ? '🔵 등록 완료 (프로그램 및 납부 방식 변경 불가)' : `상태: ${c.status}`;
+      let badgeText = isDone ? '등록 완료 (프로그램 및 납부 방식 변경 불가)' : `상태: ${c.status}`;
 
-      // 💡 핵심: isDone(등록완료) 이면 납부방식(cPay)도 disabled 처리
       const card = `
         <div class="child-card" id="childCard_${index}">
           ${(!isDone && !isCanceled) ? `<button class="btn-cancel" onclick="cancelChild(${c.rowIdx}, '${c.name}')">지원 취소</button>` : ''}
@@ -155,6 +160,7 @@
     });
   }
 
+  // [3. 전체 내용 수정 저장 기능]
   async function updateAll() {
     if(!confirm("현재 입력된 내용으로 모든 정보를 업데이트 하시겠습니까?")) return;
     
@@ -180,7 +186,7 @@
           contact: document.getElementById('gContact').value,
           region: document.getElementById('gRegion').value,
           address: document.getElementById('gAddress').value,
-          email: document.getElementById('gEmail').value
+          email: document.getElementById('gEmail').value 
         },
         children: updatedChildren
       }
@@ -188,6 +194,7 @@
 
     try {
       const resp = await fetch(SCRIPT_URL, {
+        redirect: "follow", 
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(payload)
@@ -197,14 +204,19 @@
         alert("성공적으로 수정되었습니다!");
         location.reload();
       } else alert("수정 실패: " + res.message);
-    } catch(e) { alert("통신 오류"); }
-    finally { btn.disabled = false; btn.innerText = "전체 수정 내용 저장하기"; }
+    } catch(e) { 
+      alert("통신 오류가 발생했습니다. 저장 권한을 확인해 주세요."); 
+    } finally { 
+      btn.disabled = false; btn.innerText = "전체 수정 내용 저장하기"; 
+    }
   }
 
+  // [4. 지원 취소 기능]
   async function cancelChild(rowIdx, childName) {
     if(!confirm(`[${childName}] 학생의 지원을 취소하시겠습니까?\n취소 시 복구할 수 없습니다.`)) return;
     try {
       const resp = await fetch(SCRIPT_URL, {
+        redirect: "follow", 
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify({ action: 'cancel', rowIdx: rowIdx, childName: childName })
